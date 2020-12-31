@@ -1,10 +1,13 @@
-import { GlobalStyles } from 'twin.macro'
+import { GlobalStyles } from "twin.macro"
+import tw from "twin.macro"
+
+const Container = tw.div`flex flex-col min-h-screen`
 
 const App = ({ Component, pageProps }) => (
-  <div>
+  <Container>
     <GlobalStyles />
     <Component {...pageProps} />
-  </div>
+  </Container>
 )
 
 export default App
