@@ -1,20 +1,27 @@
-import tw from 'twin.macro'
-import { Button, Logo } from './../components'
+import tw from "twin.macro"
+
+const Wrapper = tw.div`flex bg-gray-50 min-h-screen`
+const Column = tw.div``
+const List = tw.ul`rounded-lg shadow m-4 overflow-hidden`
+const Item = tw.li`p-4 w-64 border-b last:border-0 bg-white text-gray-600`
 
 const App = () => (
-  <div
-    css={[
-      tw`flex flex-col items-center justify-center h-screen`,
-      tw`bg-gradient-to-b from-electric to-ribbon`,
-    ]}
-  >
-    <div tw="flex flex-col justify-center h-full space-y-5">
-      <Button isPrimary>Submit</Button>
-      <Button isSecondary>Cancel</Button>
-      <Button isSmall>Close</Button>
-    </div>
-    <Logo />
-  </div>
+  <Wrapper>
+    <Column>
+      <List>
+        <Item>Foo</Item>
+        <Item>Bar</Item>
+        <Item>Baz</Item>
+      </List>
+    </Column>
+    <Column>
+      <List>
+        <Item>Foo</Item>
+        <Item>Bar</Item>
+        <Item>Baz</Item>
+      </List>
+    </Column>
+  </Wrapper>
 )
 
 export default App
