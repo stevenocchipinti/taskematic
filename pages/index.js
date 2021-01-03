@@ -8,8 +8,14 @@ import Logo from "../components/Logo"
 
 const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
 const NavButton = tw.button`px-4 hover:bg-gray-200 text-gray-600 transition duration-300`
-const Columns = tw.div`flex flex-grow gap-6 p-6 bg-gray-100`
-const Column = tw.div``
+const Columns = styled.div`
+  ${tw`flex flex-grow gap-6 p-6 bg-gray-100 overflow-auto`}
+  scroll-snap-type: x mandatory;
+`
+const Column = styled.div`
+  scroll-snap-align: center;
+`
+
 const List = styled.ul`
   ${tw`rounded-lg transition w-64`}
   min-height: 150px;
