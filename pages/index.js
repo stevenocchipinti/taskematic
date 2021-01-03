@@ -1,10 +1,8 @@
-// Copied from:
-//   https://codesandbox.io/s/react-drag-and-drop-react-beautiful-dnd-forked-d45lq?file=/src/index.js
-
 import React, { useEffect, useState } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
 import Logo from "../components/Logo"
+import TreeModel from "../lib/TreeModel"
 
 const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
 const NavButton = tw.button`px-4 hover:bg-gray-200 text-gray-600 transition duration-300`
@@ -31,96 +29,87 @@ const Item = styled.li`
   ${({ isDragging }) => isDragging && tw`rounded`}
 `
 
-// fake data generator
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
-    content: `item ${k + offset}`,
-  }))
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source)
-  const destClone = Array.from(destination)
-  const [removed] = sourceClone.splice(droppableSource.index, 1)
-
-  destClone.splice(droppableDestination.index, 0, removed)
-
-  const result = {}
-  result[droppableSource.droppableId] = sourceClone
-  result[droppableDestination.droppableId] = destClone
-
-  return result
-}
+// Fake data
+let Tree = new TreeModel()
+let root = Tree.parse({
+  id: "root",
+  children: [
+    {
+      id: "0",
+      title: "Foo",
+      children: [
+        {
+          id: "1",
+          title: "Foo 1",
+          children: [
+            { id: "8", title: "Foo 1-1" },
+            { id: "9", title: "Foo 1-2" },
+            { id: "10", title: "Foo 1-3" },
+          ],
+        },
+        { id: "2", title: "Foo 2" },
+        { id: "3", title: "Foo 3" },
+      ],
+    },
+    {
+      id: "4",
+      title: "Bar",
+      children: [
+        { id: "5", title: "Bar 1" },
+        { id: "6", title: "Bar 2" },
+        { id: "7", title: "Bar 3" },
+      ],
+    },
+  ],
+})
 
 function App() {
-  const [state, setState] = useState([getItems(10), getItems(5, 10)])
+  const [path, setPath] = useState(root.getPath())
 
   // Only load the dragndrop clientside
   const [componentMounted, setComponentMounted] = useState(false)
   useEffect(() => setComponentMounted(true), [])
 
   function onDragEnd(result) {
-    const { source, destination } = result
+    const { draggableId, source, destination } = result
 
-    // dropped outside the list
-    if (!destination) {
-      return
-    }
-    const sInd = +source.droppableId
-    const dInd = +destination.droppableId
+    // Dropped outside the list
+    if (!destination) return
 
-    if (sInd === dInd) {
-      const items = reorder(state[sInd], source.index, destination.index)
-      const newState = [...state]
-      newState[sInd] = items
-      setState(newState)
+    const srcNode = root.first(n => n.model.id === draggableId)
+    const dstNode = root.first(n => n.model.id === destination.droppableId)
+
+    // Reorder within the same droppable
+    if (source.droppableId === destination.droppableId) {
+      srcNode.setIndex(destination.index)
+      setPath(srcNode.getPath())
+
+      // Move to another droppable
     } else {
-      const result = move(state[sInd], state[dInd], source, destination)
-      const newState = [...state]
-      newState[sInd] = result[sInd]
-      newState[dInd] = result[dInd]
-
-      setState(newState.filter(group => group.length))
+      dstNode.addChildAtIndex(srcNode.drop(), destination.index)
+      setPath(dstNode.getPath())
     }
   }
+
+  const stringifyPath = node => node.map(n => n.model.id).join("/")
 
   return (
     <>
       <Nav>
         <Logo tw="mx-4" />
-        <NavButton
-          type="button"
-          onClick={() => {
-            setState([...state, []])
-          }}
-        >
-          Add new group
-        </NavButton>
-        <NavButton
-          type="button"
-          onClick={() => {
-            setState([...state, getItems(1)])
-          }}
-        >
-          Add new item
-        </NavButton>
+        <NavButton type="button">Something</NavButton>
+        <NavButton type="button">Something else</NavButton>
       </Nav>
+
       {componentMounted && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
-            {state.map((el, ind) => (
-              <Droppable key={ind} droppableId={`${ind}`}>
+            {path.map(node => (
+              <Droppable
+                droppableId={node.model.id}
+                key={node.model.id}
+                isCombineEnabled
+              >
                 {(provided, snapshot) => (
                   <Column>
                     <List
@@ -128,20 +117,35 @@ function App() {
                       isDraggingOver={snapshot.isDraggingOver}
                       {...provided.droppableProps}
                     >
-                      {el.map((item, index) => (
+                      {node.children.map((item, index) => (
                         <Draggable
-                          key={item.id}
-                          draggableId={item.id}
+                          key={item.model.id}
+                          draggableId={item.model.id}
                           index={index}
                         >
                           {(provided, snapshot) => (
                             <Item
+                              role="button"
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               isDragging={snapshot.isDragging}
+                              onClick={() => {
+                                const isCurrentPath =
+                                  stringifyPath(path) ===
+                                  stringifyPath(item.getPath())
+                                setPath(
+                                  isCurrentPath
+                                    ? path.slice(0, -1)
+                                    : item.getPath()
+                                )
+                              }}
+                              onDoubleClick={() => {
+                                console.log("edit", item.model)
+                                setPath(item.setIndex(0).getPath())
+                              }}
                             >
-                              {item.content}
+                              {item.model.id}. {item.model.title}
                             </Item>
                           )}
                         </Draggable>
@@ -160,55 +164,3 @@ function App() {
 }
 
 export default App
-
-// -------------------------------------------------------------------------
-
-// const App = () => {
-//   const onDragEnd = console.log
-
-//   return (
-//     <>
-//       <Nav>
-//         <Logo tw="ml-2" />
-//       </Nav>
-//       <Columns>
-//         <Column>
-//           <List>
-//             <Item>Foo</Item>
-//             <Item>Bar</Item>
-//             <Item>Baz</Item>
-//           </List>
-//         </Column>
-//         <Column>
-//           <List>
-//             <Item>Foo</Item>
-//             <Item>Bar</Item>
-//             <Item>Baz</Item>
-//           </List>
-//         </Column>
-//       </Columns>
-//     </>
-//   )
-// }
-
-// export default App
-
-//                         <div
-//                           style={{
-//                             display: "flex",
-//                             justifyContent: "space-around",
-//                           }}
-//                         >
-//                           <button
-//                             type="button"
-//                             onClick={() => {
-//                               const newState = [...state]
-//                               newState[ind].splice(index, 1)
-//                               setState(
-//                                 newState.filter(group => group.length)
-//                               )
-//                             }}
-//                           >
-//                             delete
-//                           </button>
-//                         </div>
