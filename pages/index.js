@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
 import Logo from "../components/Logo"
 import TreeModel from "../lib/TreeModel"
+import data from "../data"
 
 const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
 const NavButton = tw.button`px-4 hover:bg-gray-200 text-gray-600 transition duration-300`
@@ -30,38 +31,7 @@ const Item = styled.li`
 `
 
 // Fake data
-let Tree = new TreeModel()
-let root = Tree.parse({
-  id: "root",
-  children: [
-    {
-      id: "0",
-      title: "Foo",
-      children: [
-        {
-          id: "1",
-          title: "Foo 1",
-          children: [
-            { id: "8", title: "Foo 1-1" },
-            { id: "9", title: "Foo 1-2" },
-            { id: "10", title: "Foo 1-3" },
-          ],
-        },
-        { id: "2", title: "Foo 2" },
-        { id: "3", title: "Foo 3" },
-      ],
-    },
-    {
-      id: "4",
-      title: "Bar",
-      children: [
-        { id: "5", title: "Bar 1" },
-        { id: "6", title: "Bar 2" },
-        { id: "7", title: "Bar 3" },
-      ],
-    },
-  ],
-})
+const root = new TreeModel().parse(data)
 
 function App() {
   const [path, setPath] = useState(root.getPath())
@@ -145,7 +115,7 @@ function App() {
                                 setPath(item.setIndex(0).getPath())
                               }}
                             >
-                              {item.model.id}. {item.model.title}
+                              {item.model.title}
                             </Item>
                           )}
                         </Draggable>
