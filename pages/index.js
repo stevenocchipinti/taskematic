@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
+import { observer } from "mobx-react-lite"
 import Logo from "../components/Logo"
-import TreeModel from "../lib/TreeModel"
+import { createTree } from "../lib/Tree"
 import data from "../data"
 
 const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
@@ -28,13 +29,16 @@ const Item = styled.li`
   ${tw`first:rounded-t last:rounded-b`}
   ${tw`transition duration-200 hover:bg-gray-100`}
   ${({ isDragging }) => isDragging && tw`rounded`}
+  ${({ done }) => done && `text-decoration: line-through;`}
 `
 
 // Fake data
-const root = new TreeModel().parse(data)
+const tree = createTree(data)
+const { root } = tree
 
-function App() {
-  const [path, setPath] = useState(root.getPath())
+const App = observer(() => {
+  const [path, setPath] = useState(root.path)
+  // const [path, setPath] = useState([root])
 
   // Only load the dragndrop clientside
   const [componentMounted, setComponentMounted] = useState(false)
@@ -46,40 +50,37 @@ function App() {
     // Dropped outside the list
     if (!destination) return
 
-    const srcNode = root.first(n => n.model.id === draggableId)
-    const dstNode = root.first(n => n.model.id === destination.droppableId)
+    const srcNode = root.first(n => n.id === draggableId)
+    const dstNode = root.first(n => n.id === destination.droppableId)
 
     // Reorder within the same droppable
     if (source.droppableId === destination.droppableId) {
       srcNode.setIndex(destination.index)
-      setPath(srcNode.getPath())
+      setPath(srcNode.path)
 
-      // Move to another droppable
+      // TODO: Move to another droppable
     } else {
       dstNode.addChildAtIndex(srcNode.drop(), destination.index)
-      setPath(dstNode.getPath())
+      setPath(dstNode.path)
     }
   }
 
-  const stringifyPath = node => node.map(n => n.model.id).join("/")
+  const stringifyPath = node => node.map(n => n.id).join("/")
 
   return (
     <>
       <Nav>
         <Logo tw="mx-4" />
-        <NavButton type="button">Something</NavButton>
-        <NavButton type="button">Something else</NavButton>
+        <NavButton type="button">
+          {path.map(p => p.title).join(" ▷ ")}
+        </NavButton>
       </Nav>
 
       {componentMounted && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
             {path.map(node => (
-              <Droppable
-                droppableId={node.model.id}
-                key={node.model.id}
-                isCombineEnabled
-              >
+              <Droppable droppableId={node.id} key={node.id} isCombineEnabled>
                 {(provided, snapshot) => (
                   <Column>
                     <List
@@ -89,8 +90,8 @@ function App() {
                     >
                       {node.children.map((item, index) => (
                         <Draggable
-                          key={item.model.id}
-                          draggableId={item.model.id}
+                          key={item.id}
+                          draggableId={item.id}
                           index={index}
                         >
                           {(provided, snapshot) => (
@@ -100,22 +101,18 @@ function App() {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               isDragging={snapshot.isDragging}
+                              done={item.done}
+                              title={item.id}
                               onClick={() => {
                                 const isCurrentPath =
                                   stringifyPath(path) ===
-                                  stringifyPath(item.getPath())
+                                  stringifyPath(item.path)
                                 setPath(
-                                  isCurrentPath
-                                    ? path.slice(0, -1)
-                                    : item.getPath()
+                                  isCurrentPath ? path.slice(0, -1) : item.path
                                 )
                               }}
-                              onDoubleClick={() => {
-                                console.log("edit", item.model)
-                                setPath(item.setIndex(0).getPath())
-                              }}
                             >
-                              {item.model.title}
+                              {item.title}
                             </Item>
                           )}
                         </Draggable>
@@ -131,6 +128,6 @@ function App() {
       )}
     </>
   )
-}
+})
 
 export default App
