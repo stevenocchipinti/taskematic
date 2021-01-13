@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
 import { observer } from "mobx-react-lite"
 import Logo from "../components/Logo"
 import { createTree } from "../lib/Tree"
+import useClientSideOnly from "../lib/useClientSideOnly"
 import data from "../data"
 
 const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
@@ -38,11 +39,9 @@ const { root } = tree
 
 const App = observer(() => {
   const [path, setPath] = useState(root.path)
-  // const [path, setPath] = useState([root])
 
   // Only load the dragndrop clientside
-  const [componentMounted, setComponentMounted] = useState(false)
-  useEffect(() => setComponentMounted(true), [])
+  const clientSideOnly = useClientSideOnly()
 
   function onDragEnd(result) {
     const { draggableId, source, destination } = result
@@ -58,9 +57,10 @@ const App = observer(() => {
       srcNode.setIndex(destination.index)
       setPath(srcNode.path)
 
-      // TODO: Move to another droppable
+      // Move to a different column
     } else {
-      dstNode.addChildAtIndex(srcNode.drop(), destination.index)
+      const removedNode = srcNode.drop()
+      dstNode.addChild(removedNode, destination.index)
       setPath(dstNode.path)
     }
   }
@@ -76,7 +76,7 @@ const App = observer(() => {
         </NavButton>
       </Nav>
 
-      {componentMounted && (
+      {clientSideOnly && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
             {path.map(node => (
