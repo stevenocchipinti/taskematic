@@ -15,7 +15,8 @@
     "react-dom": "^17.0.1",
     "styled-components": "^5.2.1",
     "tailwindcss": "^2.0.1",
-    "twin.macro": "^2.0.6"
+    "twin.macro": "^2.0.6",
+    "typeface-montserrat": "^1.1.13"
   },
   "devDependencies": {
     "jest": "^26.6.3"
