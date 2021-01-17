@@ -1,8 +1,10 @@
 import { useState } from "react"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { DragDropContext } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
 import { observer } from "mobx-react-lite"
 import Logo from "../components/Logo"
+import Column from "../components/Column"
+import Item from "../components/Item"
 import { createTree } from "../lib/Tree"
 import useClientSideOnly from "../lib/useClientSideOnly"
 import data from "../data"
@@ -12,25 +14,6 @@ const NavButton = tw.button`px-4 hover:bg-gray-200 text-gray-600 transition dura
 const Columns = styled.div`
   ${tw`flex flex-grow gap-6 p-6 bg-gray-100 overflow-auto`}
   scroll-snap-type: x mandatory;
-`
-const Column = styled.div`
-  scroll-snap-align: center;
-`
-
-const List = styled.ul`
-  ${tw`rounded-lg transition w-64`}
-  min-height: 150px;
-  ${({ isDraggingOver }) => isDraggingOver && tw`shadow-inner bg-gray-300`}
-  :empty {
-    ${tw`shadow-inner bg-gray-200`}
-  }
-`
-const Item = styled.li`
-  ${tw`p-4 w-64 border-b last:border-0 bg-white text-gray-600 shadow`}
-  ${tw`first:rounded-t last:rounded-b`}
-  ${tw`transition duration-200 hover:bg-gray-100`}
-  ${({ isDragging }) => isDragging && tw`rounded`}
-  ${({ done }) => done && `text-decoration: line-through;`}
 `
 
 // Fake data
@@ -80,48 +63,26 @@ const App = observer(() => {
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
             {path.map(node => (
-              <Droppable droppableId={node.id} key={node.id} isCombineEnabled>
-                {(provided, snapshot) => (
-                  <Column>
-                    <List
-                      ref={provided.innerRef}
-                      isDraggingOver={snapshot.isDraggingOver}
-                      {...provided.droppableProps}
-                    >
-                      {node.children.map((item, index) => (
-                        <Draggable
-                          key={item.id}
-                          draggableId={item.id}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <Item
-                              role="button"
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              isDragging={snapshot.isDragging}
-                              done={item.done}
-                              title={item.id}
-                              onClick={() => {
-                                const isCurrentPath =
-                                  stringifyPath(path) ===
-                                  stringifyPath(item.path)
-                                setPath(
-                                  isCurrentPath ? path.slice(0, -1) : item.path
-                                )
-                              }}
-                            >
-                              {item.title}
-                            </Item>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </List>
-                  </Column>
-                )}
-              </Droppable>
+              <Column
+                key={node.id}
+                node={node}
+                renderChild={(childNode, index) => {
+                  const isCurrentPath =
+                    stringifyPath(path) === stringifyPath(childNode.path)
+                  return (
+                    <Item
+                      key={childNode.id}
+                      node={childNode}
+                      index={index}
+                      onClick={() => {
+                        setPath(
+                          isCurrentPath ? path.slice(0, -1) : childNode.path
+                        )
+                      }}
+                    />
+                  )
+                }}
+              />
             ))}
           </Columns>
         </DragDropContext>
