@@ -16,7 +16,7 @@ const List = styled.ul`
 
 const DroppableColumn = ({ node, renderChild }) => {
   return (
-    <Droppable droppableId={node.id} isCombineEnabled>
+    <Droppable droppableId={node.id}>
       {(provided, snapshot) => (
         <Column>
           <List

@@ -7,7 +7,9 @@ const Item = styled.li`
   ${tw`transition duration-200 hover:bg-gray-100`}
   ${({ isDragging }) => isDragging && tw`rounded`}
   ${({ done }) => done && `text-decoration: line-through;`}
-  ${({ isSelected }) => isSelected && `text-xl`}
+  ${({ isSelected }) => isSelected && tw`transform scale-105 rounded`}
+  ${({ hasReducedFocus, isSelected }) =>
+    hasReducedFocus && !isSelected && tw`opacity-50`}
 `
 
 const DraggableCard = ({ node, index, ...props }) => {

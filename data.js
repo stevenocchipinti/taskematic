@@ -12,7 +12,10 @@ export default {
               title: "Clicking on a card opens that node in a new column",
               done: true,
             },
-            { title: "Show which parent node the column belongs to" },
+            {
+              title: "Show which parent node the column belongs to",
+              done: true,
+            },
             {
               title: "Allow a leaf node to be marked as done or not",
               done: true,

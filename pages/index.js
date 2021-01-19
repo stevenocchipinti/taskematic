@@ -49,6 +49,8 @@ const App = observer(() => {
   }
 
   const stringifyPath = node => node.map(n => n.id).join("/")
+  const withinCurrentPath = givenPath =>
+    stringifyPath(path).match(stringifyPath(givenPath))
 
   return (
     <>
@@ -62,22 +64,21 @@ const App = observer(() => {
       {clientSideOnly && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
-            {path.map(node => (
+            {path.map((node, columnIndex) => (
               <Column
                 key={node.id}
                 node={node}
-                renderChild={(childNode, index) => {
-                  const isCurrentPath =
-                    stringifyPath(path) === stringifyPath(childNode.path)
+                renderChild={(childNode, childIndex) => {
+                  const isSelected = withinCurrentPath(childNode.path)
                   return (
                     <Item
                       key={childNode.id}
                       node={childNode}
-                      index={index}
+                      index={childIndex}
+                      isSelected={isSelected}
+                      hasReducedFocus={!!path[columnIndex + 1]}
                       onClick={() => {
-                        setPath(
-                          isCurrentPath ? path.slice(0, -1) : childNode.path
-                        )
+                        setPath(isSelected ? path.slice(0, -1) : childNode.path)
                       }}
                     />
                   )
