@@ -30,14 +30,14 @@ export default {
       title: "Dragging and dropping",
       children: [
         { title: "Drag within the same column", done: true },
-        { title: "Drag to a different column" },
+        { title: "Drag to a different column", done: true },
         { title: "Drag on top of another card" },
       ],
     },
     {
       title: "Visuals",
       children: [
-        { title: "Make and use a logo" },
+        { title: "Make and use a logo", done: true },
         { title: "Choose a primary brand colour" },
         { title: "Add a favicon" },
       ],

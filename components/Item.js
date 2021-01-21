@@ -2,12 +2,12 @@ import tw, { styled } from "twin.macro"
 import { Draggable } from "react-beautiful-dnd"
 
 const Item = styled.li`
-  ${tw`w-64 p-4 bg-white text-gray-600 shadow`}
-  ${tw`border-b last:border-0 first:rounded-t last:rounded-b`}
+  ${tw`w-64 p-4 bg-white text-gray-600`}
   ${tw`transition duration-200 hover:bg-gray-100`}
+  ${tw`border border-b-0 last:border-b first:rounded-t last:rounded-b`}
   ${({ isDragging }) => isDragging && tw`rounded`}
   ${({ done }) => done && `text-decoration: line-through;`}
-  ${({ isSelected }) => isSelected && tw`transform scale-105 rounded`}
+  ${({ isSelected }) => isSelected && tw`transform scale-105 rounded border`}
   ${({ hasReducedFocus, isSelected }) =>
     hasReducedFocus && !isSelected && tw`opacity-50`}
 `
