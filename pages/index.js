@@ -78,7 +78,7 @@ const App = observer(() => {
                       isSelected={isSelected}
                       hasReducedFocus={!!path[columnIndex + 1]}
                       onClick={() => {
-                        setPath(isSelected ? path.slice(0, -1) : childNode.path)
+                        setPath(isSelected ? node.path : childNode.path)
                       }}
                     />
                   )
