@@ -1,8 +1,10 @@
 import tw, { styled } from "twin.macro"
 import { Draggable } from "react-beautiful-dnd"
+import Progress from "./Progress"
 
 const Item = styled.li`
-  ${tw`w-64 p-4 bg-white text-gray-600`}
+  ${tw`flex justify-between w-64 text-sm`}
+  ${tw`bg-white text-gray-600`}
   ${tw`transition duration-200 hover:bg-gray-100`}
   ${tw`border border-b-0 last:border-b first:rounded-t last:rounded-b`}
   ${({ isDragging }) => isDragging && tw`rounded`}
@@ -11,6 +13,8 @@ const Item = styled.li`
   ${({ hasReducedFocus, isSelected }) =>
     hasReducedFocus && !isSelected && tw`opacity-50`}
 `
+
+const Text = tw.span`p-4`
 
 const DraggableCard = ({ node, index, ...props }) => {
   return (
@@ -26,15 +30,12 @@ const DraggableCard = ({ node, index, ...props }) => {
           title={node.id}
           {...props}
         >
-          <strong>
-            {node.isLeaf
-              ? node.done
-                ? "✅"
-                : "❌"
-              : `${(node.progress * 100).toFixed(0)}%`}
-          </strong>
-          &nbsp;
-          {node.title}
+          <Text>{node.title}</Text>
+          <Progress
+            tw="h-10 w-10 m-2 flex-none"
+            percentage={node.progress}
+            showBoolean={node.isLeaf}
+          />
         </Item>
       )}
     </Draggable>
