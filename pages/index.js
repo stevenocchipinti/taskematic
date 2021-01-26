@@ -14,6 +14,12 @@ const NavButton = tw.button`px-4 hover:bg-gray-200 text-gray-600 transition dura
 const Columns = styled.div`
   ${tw`flex flex-grow gap-6 p-6 bg-gray-100 overflow-auto`}
   scroll-snap-type: x mandatory;
+
+  // This is a dodgy hack until I can work out how to get the margin at the end
+  &:after {
+    content: ".";
+    color: transparent;
+  }
 `
 
 // Fake data
@@ -56,9 +62,6 @@ const App = observer(() => {
     <>
       <Nav>
         <Logo tw="mx-4" />
-        <NavButton type="button">
-          {path.map(p => p.title).join(" ▷ ")}
-        </NavButton>
       </Nav>
 
       {clientSideOnly && (

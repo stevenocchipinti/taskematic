@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import tw, { styled } from "twin.macro"
 import { Droppable } from "react-beautiful-dnd"
 
@@ -27,11 +28,16 @@ const List = styled.ul`
 `
 
 const DroppableColumn = ({ node, renderChild }) => {
+  const ref = useRef(null)
+  useEffect(() => {
+    if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" })
+  }, [])
+
   return (
     <Droppable droppableId={node.id}>
       {(provided, snapshot) => (
         <Container>
-          <Column>
+          <Column ref={ref}>
             <Title>{node.title}</Title>
             <List
               ref={provided.innerRef}
