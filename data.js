@@ -22,7 +22,17 @@ export default {
             },
           ],
         },
-        { title: "Automatic recursive progress for non-leaf nodes" },
+        {
+          title: "Automatic recursive progress for non-leaf nodes",
+          children: [
+            {
+              title: "Calculate progress with recursive algorithm",
+              done: true,
+            },
+            { title: "Display percentage for non-leaf nodes" },
+            { title: "Display boolean (tick) for leaf nodes" },
+          ],
+        },
         { title: "Fancy circular progress indicator" },
       ],
     },
@@ -40,6 +50,7 @@ export default {
         { title: "Make and use a logo", done: true },
         { title: "Choose a primary brand colour" },
         { title: "Add a favicon" },
+        { title: "Dark mode" },
       ],
     },
   ],
