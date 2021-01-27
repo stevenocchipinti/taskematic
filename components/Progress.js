@@ -1,5 +1,4 @@
 import tw from "twin.macro"
-import { observer } from "mobx-react-lite"
 import { CircularProgressbar } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 
@@ -34,16 +33,14 @@ const colorForPercentage = percentage => {
   return blue
 }
 
-const Container = tw.div`cursor-pointer relative`
-
-const Progress = observer(({ node, onClick, ...props }) => {
-  const fg = colorForPercentage(node.progress)
-  const text = node.isLeaf ? "" : `${(node.progress * 100).toFixed(0)}%`
+const Progress = ({ percentage, showBoolean, onClick, ...props }) => {
+  const fg = colorForPercentage(percentage)
+  const text = showBoolean ? "" : `${(percentage * 100).toFixed(0)}%`
 
   return (
-    <Container role="button" onClick={onClick}>
+    <div tw="cursor-pointer relative" role="button" onClick={onClick}>
       <CircularProgressbar
-        value={node.progress}
+        value={percentage}
         text={text}
         minValue={0}
         maxValue={1}
@@ -55,11 +52,11 @@ const Progress = observer(({ node, onClick, ...props }) => {
         }}
         {...props}
       />
-      {node.isLeaf && node.progress === 1 && (
+      {showBoolean && percentage === 1 && (
         <Tick tw="h-6 w-6 absolute inset-0 m-auto text-green-500" />
       )}
-    </Container>
+    </div>
   )
-})
+}
 
 export default Progress

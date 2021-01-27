@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
-import { observer } from "mobx-react-lite"
 
 import Logo from "../components/Logo"
 import Column from "../components/Column"
@@ -27,7 +26,7 @@ const Columns = styled.div`
 const tree = createTree(data)
 const { root } = tree
 
-const App = observer(() => {
+const App = () => {
   const [path, setPath] = useState(root.path)
 
   // Only load the dragndrop clientside
@@ -94,6 +93,6 @@ const App = observer(() => {
       )}
     </>
   )
-})
+}
 
 export default App
