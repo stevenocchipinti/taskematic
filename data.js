@@ -33,8 +33,8 @@ export default {
     {
       title: "Fancy circular progress indicator",
       children: [
-        { title: "Display percentage for non-leaf nodes" },
-        { title: "Display boolean (tick) for leaf nodes" },
+        { title: "Display percentage for non-leaf nodes", done: true },
+        { title: "Display boolean (tick) for leaf nodes", done: true },
       ],
     },
     {

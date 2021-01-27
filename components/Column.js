@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import tw, { styled } from "twin.macro"
+import { observer } from "mobx-react-lite"
 import { Droppable } from "react-beautiful-dnd"
 
 const Container = styled.div`
@@ -27,7 +28,7 @@ const List = styled.ul`
   }
 `
 
-const DroppableColumn = ({ node, renderChild }) => {
+const DroppableColumn = observer(({ node, renderChild }) => {
   const ref = useRef(null)
   useEffect(() => {
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" })
@@ -52,6 +53,6 @@ const DroppableColumn = ({ node, renderChild }) => {
       )}
     </Droppable>
   )
-}
+})
 
 export default DroppableColumn

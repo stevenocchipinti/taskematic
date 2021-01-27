@@ -2,6 +2,7 @@ import { useState } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
 import { observer } from "mobx-react-lite"
+
 import Logo from "../components/Logo"
 import Column from "../components/Column"
 import Item from "../components/Item"
