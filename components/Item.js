@@ -35,7 +35,7 @@ const DraggableCard = ({ node, index, ...props }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           isDragging={snapshot.isDragging}
-          done={node.done}
+          done={node.done || node.progress === 1}
           title={node.id}
           {...props}
         >
