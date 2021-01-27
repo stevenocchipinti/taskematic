@@ -42,7 +42,7 @@ const DraggableCard = ({ node, index, ...props }) => {
           <Text>{node.title}</Text>
           <Progress
             tw="h-10 w-10 m-2 flex-none"
-            percentage={node.progress}
+            node={node}
             showBoolean={node.isLeaf}
             onClick={e => {
               if (node.isLeaf) {

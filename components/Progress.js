@@ -1,5 +1,6 @@
 import tw from "twin.macro"
 import { CircularProgressbar } from "react-circular-progressbar"
+import { observer } from "mobx-react-lite"
 import "react-circular-progressbar/dist/styles.css"
 
 import tailwind from "../lib/tailwind"
@@ -33,20 +34,21 @@ const colorForPercentage = percentage => {
   return blue
 }
 
-const Progress = ({ percentage, showBoolean, onClick, ...props }) => {
+const Progress = observer(({ node, showBoolean, onClick, ...props }) => {
+  const percentage = node.progress
   const fg = colorForPercentage(percentage)
-  const text = showBoolean ? "" : `${(percentage * 100).toFixed(0)}%`
+  const doneChildren = node.children.filter(n => n.done).length
+  const text = showBoolean ? "" : `${doneChildren}/${node.children.length}`
 
   return (
     <div tw="cursor-pointer relative" role="button" onClick={onClick}>
       <CircularProgressbar
         value={percentage}
         text={text}
-        minValue={0}
         maxValue={1}
         strokeWidth={9}
         styles={{
-          text: { fontSize: "26px", fill: fg },
+          text: { fontSize: "28px", fill: fg },
           path: { stroke: fg },
           trail: { stroke: gray },
         }}
@@ -57,6 +59,6 @@ const Progress = ({ percentage, showBoolean, onClick, ...props }) => {
       )}
     </div>
   )
-}
+})
 
 export default Progress
