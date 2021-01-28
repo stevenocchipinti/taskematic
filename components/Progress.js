@@ -1,4 +1,4 @@
-import tw from "twin.macro"
+import "twin.macro"
 import { CircularProgressbar } from "react-circular-progressbar"
 import { observer } from "mobx-react-lite"
 import "react-circular-progressbar/dist/styles.css"

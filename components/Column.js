@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import tw, { styled } from "twin.macro"
 import { Observer } from "mobx-react-lite"
 import { Droppable } from "react-beautiful-dnd"
+import AddItemForm from "./AddItemForm"
 
 const DroppableObserver = ({ children, ...props }) => (
   <Droppable {...props}>
@@ -37,10 +38,18 @@ const List = styled.ul`
 `
 
 const DroppableColumn = ({ node, renderChild }) => {
+  const [value, setValue] = useState("")
+
   const ref = useRef(null)
   useEffect(() => {
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" })
   }, [])
+
+  const onSubmit = e => {
+    e.preventDefault()
+    node.createChild({ title: value })
+    setValue("")
+  }
 
   return (
     <DroppableObserver droppableId={node.id}>
@@ -56,6 +65,11 @@ const DroppableColumn = ({ node, renderChild }) => {
               {node.children.map((child, index) => renderChild(child, index))}
               {provided.placeholder}
             </List>
+            <AddItemForm
+              onSubmit={onSubmit}
+              value={value}
+              onChange={e => setValue(e.target.value)}
+            />
           </Column>
         </Container>
       )}

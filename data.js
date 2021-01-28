@@ -5,9 +5,8 @@ export default {
     {
       title: "Functionality",
       children: [
-        { title: "Add new tasks" },
-        { title: "Archive and/or delete tasks" },
         { title: "Edit tasks" },
+        { title: "Archive and/or delete tasks" },
         {
           title: "Dragging and dropping",
           children: [
@@ -16,6 +15,7 @@ export default {
             { title: "Drag on top of another card" },
           ],
         },
+        { title: "Add new tasks", done: true },
         {
           title: "Automatic recursive progress for non-leaf nodes",
           children: [
