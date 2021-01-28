@@ -6,10 +6,16 @@ export default {
       title: "Functionality",
       children: [
         {
+          title: "Edit tasks",
+          children: [
+            { title: "Edit titles", done: true },
+            { title: "Edit descriptions" },
+          ],
+        },
+        {
           title: "Delete tasks",
           content: "This could be an archive feature in the future.",
         },
-        { title: "Edit tasks" },
         {
           title: "Dragging and dropping",
           children: [
@@ -20,7 +26,7 @@ export default {
         },
         { title: "Add new tasks", done: true },
         {
-          title: "Automatic recursive progress for non-leaf nodes",
+          title: "Automatic progress for non-leaf nodes",
           children: [
             {
               title: "Calculate progress with recursive algorithm",

@@ -3,6 +3,7 @@ import tw, { styled } from "twin.macro"
 import { Observer } from "mobx-react-lite"
 import { Droppable } from "react-beautiful-dnd"
 import AddItemForm from "./AddItemForm"
+import EditableTitle from "./EditableTitle"
 
 const DroppableObserver = ({ children, ...props }) => (
   <Droppable {...props}>
@@ -21,7 +22,6 @@ const Column = styled.div`
   ${tw`w-72 bg-white rounded p-4 shadow`}
 `
 
-const Title = tw.h1`text-lg text-gray-600 font-semibold mb-4`
 const Content = tw.p`text-sm text-gray-600 mb-4`
 
 const List = styled.ul`
@@ -40,7 +40,7 @@ const List = styled.ul`
 `
 
 const DroppableColumn = ({ node, renderChild }) => {
-  const [value, setValue] = useState("")
+  const [newItemTitle, setNewItemTitle] = useState("")
 
   const ref = useRef(null)
   useEffect(() => {
@@ -49,8 +49,8 @@ const DroppableColumn = ({ node, renderChild }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    node.createChild({ title: value })
-    setValue("")
+    node.createChild({ title: newItemTitle })
+    setNewItemTitle("")
   }
 
   return (
@@ -58,8 +58,11 @@ const DroppableColumn = ({ node, renderChild }) => {
       {(provided, snapshot) => (
         <Container>
           <Column ref={ref}>
-            <Title>{node.title}</Title>
-            <Content>{node.content}</Content>
+            <EditableTitle
+              value={node.title}
+              onChange={newTitle => node.setTitle(newTitle)}
+            />
+            {node.content && <Content>{node.content}</Content>}
             <List
               ref={provided.innerRef}
               isDraggingOver={snapshot.isDraggingOver}
@@ -70,8 +73,8 @@ const DroppableColumn = ({ node, renderChild }) => {
             </List>
             <AddItemForm
               onSubmit={onSubmit}
-              value={value}
-              onChange={e => setValue(e.target.value)}
+              value={newItemTitle}
+              onChange={e => setNewItemTitle(e.target.value)}
             />
           </Column>
         </Container>
