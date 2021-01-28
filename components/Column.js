@@ -26,7 +26,8 @@ const Content = tw.p`text-sm text-gray-600 mb-4`
 
 const List = styled.ul`
   ${tw`rounded transition`}
-  min-height: 150px;
+  min-height: 64px;
+  ${({ isDraggingOver }) => isDraggingOver && `min-height: 150px;`}
   ${({ isDraggingOver }) => isDraggingOver && tw`shadow-inner bg-gray-300`}
   :empty {
     ${tw`border bg-gray-50 text-gray-400 text-sm`}
