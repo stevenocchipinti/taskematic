@@ -37,8 +37,8 @@ const App = () => {
     // Dropped outside the list
     if (!destination) return
 
-    const srcNode = root.first(n => n.id === draggableId)
-    const dstNode = root.first(n => n.id === destination.droppableId)
+    const srcNode = root.find(n => n.id === draggableId)
+    const dstNode = root.find(n => n.id === destination.droppableId)
 
     // Reorder within the same droppable
     if (source.droppableId === destination.droppableId) {
