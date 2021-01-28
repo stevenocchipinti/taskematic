@@ -37,8 +37,10 @@ const colorForPercentage = percentage => {
 const Progress = observer(({ node, showBoolean, onClick, ...props }) => {
   const percentage = node.progress
   const fg = colorForPercentage(percentage)
-  const doneChildren = node.children.filter(n => n.done).length
-  const text = showBoolean ? "" : `${doneChildren}/${node.children.length}`
+  const doneChildren = node.children.filter(n => n.progress == 1)
+  const text = showBoolean
+    ? ""
+    : `${doneChildren.length}/${node.children.length}`
 
   return (
     <div tw="cursor-pointer relative" role="button" onClick={onClick}>
