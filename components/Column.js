@@ -18,17 +18,18 @@ const Container = styled.div`
 `
 
 const Column = styled.div`
-  ${tw`bg-white rounded p-4 shadow`}
+  ${tw`w-72 bg-white rounded p-4 shadow`}
 `
 
 const Title = tw.h1`text-lg text-gray-600 font-semibold mb-4`
+const Content = tw.p`text-sm text-gray-600 mb-4`
 
 const List = styled.ul`
-  ${tw`w-64 transition`}
+  ${tw`rounded transition`}
   min-height: 150px;
   ${({ isDraggingOver }) => isDraggingOver && tw`shadow-inner bg-gray-300`}
   :empty {
-    ${tw`border rounded bg-gray-50 text-gray-400 text-sm`}
+    ${tw`border bg-gray-50 text-gray-400 text-sm`}
     ${tw`flex items-center justify-center`}
     ::after {
       display: block;
@@ -57,6 +58,7 @@ const DroppableColumn = ({ node, renderChild }) => {
         <Container>
           <Column ref={ref}>
             <Title>{node.title}</Title>
+            <Content>{node.content}</Content>
             <List
               ref={provided.innerRef}
               isDraggingOver={snapshot.isDraggingOver}

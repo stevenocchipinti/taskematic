@@ -5,8 +5,11 @@ export default {
     {
       title: "Functionality",
       children: [
+        {
+          title: "Delete tasks",
+          content: "This could be an archive feature in the future.",
+        },
         { title: "Edit tasks" },
-        { title: "Archive and/or delete tasks" },
         {
           title: "Dragging and dropping",
           children: [
