@@ -12,7 +12,7 @@ export default {
             {
               title: "Edit descriptions",
               content:
-                "This the content that should be editable. Also, in future versions, it would be nice if this was markdown!",
+                "# h1\n## h2\n### h3\n#### h4\n##### h5\n###### h6\n\nThis is **bold** and _italic_.\n\nunordered:\n\n- asdf\n- adsf\n\nordered:\n\n1. sdf\n2. sdf\n",
             },
           ],
         },

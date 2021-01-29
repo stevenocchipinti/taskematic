@@ -1,6 +1,6 @@
+import tw, { styled } from "twin.macro"
 import { useState, useEffect } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
-import tw, { styled } from "twin.macro"
 
 import Logo from "../components/Logo"
 import Column from "../components/Column"
