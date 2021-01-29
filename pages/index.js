@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import tw, { styled } from "twin.macro"
 
@@ -6,7 +6,8 @@ import Logo from "../components/Logo"
 import Column from "../components/Column"
 import Item from "../components/Item"
 import { createTree } from "../lib/Tree"
-import useClientSideOnly from "../lib/useClientSideOnly"
+
+// Fake data
 import data from "../data"
 
 const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
@@ -21,15 +22,17 @@ const Columns = styled.div`
   }
 `
 
-// Fake data
-const tree = createTree(data)
-const { root } = tree
-
 const App = () => {
-  const [path, setPath] = useState(root.path)
+  const [tree, setTree] = useState(null)
+  const [path, setPath] = useState([])
 
-  // Only load the dragndrop clientside
-  const clientSideOnly = useClientSideOnly()
+  useEffect(() => {
+    const tree = createTree(data, {
+      delete: deletedNode => setPath(deletedNode.parent.path),
+    })
+    setTree(tree)
+    setPath(tree.root.path)
+  }, [])
 
   function onDragEnd(result) {
     const { draggableId, source, destination } = result
@@ -37,8 +40,8 @@ const App = () => {
     // Dropped outside the list
     if (!destination) return
 
-    const srcNode = root.find(n => n.id === draggableId)
-    const dstNode = root.find(n => n.id === destination.droppableId)
+    const srcNode = tree.root.find(n => n.id === draggableId)
+    const dstNode = tree.root.find(n => n.id === destination.droppableId)
 
     // Reorder within the same droppable
     if (source.droppableId === destination.droppableId) {
@@ -47,7 +50,7 @@ const App = () => {
 
       // Move to a different column
     } else {
-      const removedNode = srcNode.drop()
+      const removedNode = srcNode.delete()
       dstNode.addChild(removedNode, destination.index)
       setPath(dstNode.path)
     }
@@ -63,7 +66,7 @@ const App = () => {
         <Logo tw="mx-4" />
       </Nav>
 
-      {clientSideOnly && (
+      {tree && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
             {path.map((node, columnIndex) => (

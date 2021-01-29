@@ -18,21 +18,22 @@ const PlusIcon = () => (
 )
 
 const Button = styled.button`
-  ${tw`w-8 h-8 p-1 m-auto mr-1 absolute right-0 top-0 bottom-0 text-gray-400`}
+  ${tw`w-8 h-8 p-1 m-auto mr-1 absolute right-0 top-0 bottom-0 text-gray-400 hover:text-gray-500`}
   ${({ visible }) => !visible && tw`transition opacity-0 pointer-events-none`}
 `
+
+const Input = tw.input`h-10 py-2 pl-4 pr-9 text-sm w-full border rounded`
 
 const AddItemForm = ({ onSubmit, ...props }) => {
   const [focused, setFocused] = useState(false)
 
   return (
-    <form onSubmit={onSubmit}>
-      <div tw="mt-2 relative">
-        <input
+    <div tw="relative flex-grow">
+      <form onSubmit={onSubmit}>
+        <Input
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="Add new item"
-          tw="h-10 py-2 pl-4 pr-9 text-sm w-full border rounded"
           {...props}
         />
         <Button
@@ -42,8 +43,8 @@ const AddItemForm = ({ onSubmit, ...props }) => {
         >
           <PlusIcon />
         </Button>
-      </div>
-    </form>
+      </form>
+    </div>
   )
 }
 

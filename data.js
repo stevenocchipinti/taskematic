@@ -9,12 +9,12 @@ export default {
           title: "Edit tasks",
           children: [
             { title: "Edit titles", done: true },
-            { title: "Edit descriptions" },
+            {
+              title: "Edit descriptions",
+              content:
+                "This the content that should be editable. Also, in future versions, it would be nice if this was markdown!",
+            },
           ],
-        },
-        {
-          title: "Delete tasks",
-          content: "This could be an archive feature in the future.",
         },
         {
           title: "Dragging and dropping",
@@ -23,6 +23,11 @@ export default {
             { title: "Drag to a different column", done: true },
             { title: "Drag on top of another card" },
           ],
+        },
+        {
+          title: "Delete tasks",
+          content: "This could be an archive feature in the future.",
+          done: true,
         },
         { title: "Add new tasks", done: true },
         {
