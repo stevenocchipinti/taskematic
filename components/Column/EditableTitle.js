@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react"
-import tw from "twin.macro"
+import tw, { styled } from "twin.macro"
 
-const Title = tw.h1`text-lg text-gray-600 font-semibold mb-4`
-const TitleInput = tw.input`w-full text-lg text-gray-600 font-semibold mb-4`
+const Title = tw.h2`text-lg text-gray-600 font-semibold mb-4 align-top`
+const TitleInput = styled.input`
+  ${tw`w-full text-lg text-gray-600 font-semibold`}
+  ${tw`py-1 px-2 mb-3 -mt-1 -mx-2`}
+`
 
 const EditableTitle = ({ onChange, value }) => {
   const [editable, setEditable] = useState(false)

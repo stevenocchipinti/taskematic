@@ -6,7 +6,7 @@ import { Droppable } from "react-beautiful-dnd"
 import DeleteButton from "./DeleteButton"
 import AddItemForm from "./AddItemForm"
 import EditableTitle from "./EditableTitle"
-import EditableContent from "./EditableContent"
+import EditableContent from "../EditableContent"
 
 const DroppableObserver = ({ children, ...props }) => (
   <Droppable {...props}>

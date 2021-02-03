@@ -6,22 +6,23 @@ export default {
       title: "Functionality",
       children: [
         {
-          title: "Edit tasks",
-          children: [
-            { title: "Edit titles", done: true },
-            {
-              title: "Edit descriptions",
-              content:
-                "# h1\n## h2\n### h3\n#### h4\n##### h5\n###### h6\n\nThis is **bold** and _italic_.\n\nunordered:\n\n- asdf\n- adsf\n\nordered:\n\n1. sdf\n2. sdf\n",
-            },
-          ],
-        },
-        {
           title: "Dragging and dropping",
           children: [
             { title: "Drag within the same column", done: true },
             { title: "Drag to a different column", done: true },
             { title: "Drag on top of another card" },
+          ],
+        },
+        {
+          title: "Edit tasks",
+          children: [
+            { title: "Edit titles", done: true },
+            {
+              title: "Edit descriptions",
+              done: true,
+              content:
+                "# h1\n## h2\n### h3\n#### h4\n##### h5\n###### h6\n\nThis is **bold** and _italic_.\n\nunordered:\n\n- asdf\n- adsf\n\nordered:\n\n1. sdf\n2. sdf\n\n```\ncode block\n```\n\n---\n\nThis is `inline code` too.\n\n- [ ] checklist\n- [ ] asdf\n\nAn [inline link](/asdf) too\n\n> quote\n\nline with just\none line break",
+            },
           ],
         },
         {
