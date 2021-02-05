@@ -1,4 +1,5 @@
 import tw, { styled } from "twin.macro"
+import { keyframes } from "styled-components"
 import { useEffect, useRef, useState } from "react"
 import { Observer } from "mobx-react-lite"
 import { Droppable } from "react-beautiful-dnd"
@@ -21,8 +22,14 @@ const Container = styled.div`
   max-width: 18rem;
 `
 
+const slideIn = keyframes`
+  0% { transform: translateX(-30px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+`
+
 const Column = styled.div`
   ${tw`w-72 bg-white rounded p-4 shadow`}
+  animation: ${slideIn} 0.2s ease-in-out;
 `
 
 const List = styled.ul`
