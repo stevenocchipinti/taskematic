@@ -1,19 +1,13 @@
 import tw, { styled } from "twin.macro"
 
-const LogoLink = styled.a`
-  font-family: "Montserrat", sans-serif;
-  ${tw`flex items-center p-3 pl-2 text-gray-700`}
-  ${tw`opacity-50 hover:opacity-100`}
-  ${tw`transition duration-300`}
-`
-
-const TaskematicSvg = () => (
+const TaskematicSvg = props => (
   <svg
     width="62"
     height="62"
     viewBox="0 0 62 62"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     <path
       d="M23.4069 39.2824C23.1756 39.4486 22.8661 39.4565 22.6267 39.3022L6.47443 28.8944C5.81423 28.469 5.06702 29.2961 5.55709 29.9098L22.2026 50.7561C22.4616 51.0805 22.9457 51.1061 23.2375 50.8108L55.5485 18.1188C56.1437 17.5166 55.346 16.5763 54.6548 17.0655L44.0893 24.5438C43.8453 24.7165 43.5181 24.7134 43.2774 24.536L37.8428 20.5311C37.2497 20.094 36.4744 20.7614 36.8184 21.4129L39.733 26.9329C39.8939 27.2377 39.8064 27.6146 39.5276 27.8173L38.0478 28.8936C37.8105 29.0662 37.4901 29.0707 37.2481 28.9047L28.9365 23.2082C28.3017 22.7731 27.5364 23.5419 27.9745 24.1747L33.0817 31.5524C33.2977 31.8645 33.2226 32.2924 32.9132 32.5122L31.1408 33.7716C30.9067 33.9379 30.5943 33.9427 30.3552 33.7837L18.2879 25.7573C17.647 25.3309 16.8924 26.1107 17.3396 26.7373L24.9122 37.3496C25.134 37.6605 25.0626 38.0923 24.7524 38.3153L23.4069 39.2824Z"
@@ -22,11 +16,4 @@ const TaskematicSvg = () => (
   </svg>
 )
 
-const Logo = props => (
-  <LogoLink href="/" {...props}>
-    <TaskematicSvg />
-    <h1 tw="text-3xl">Taskematic</h1>
-  </LogoLink>
-)
-
-export default Logo
+export default TaskematicSvg

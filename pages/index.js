@@ -2,7 +2,7 @@ import tw, { styled } from "twin.macro"
 import { useState, useEffect } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 
-import Logo from "../components/Logo"
+import Sidebar from "../components/Sidebar"
 import Column from "../components/Column"
 import Item from "../components/Item"
 import { createTree } from "../lib/Tree"
@@ -10,9 +10,8 @@ import { createTree } from "../lib/Tree"
 // Fake data
 import data from "../data"
 
-const Nav = tw.nav`flex bg-gray-50 h-16 border-b`
 const Columns = styled.div`
-  ${tw`flex flex-grow gap-6 p-6 bg-gray-100 overflow-auto`}
+  ${tw`flex flex-grow bg-gray-100 overflow-auto`}
   scroll-snap-type: x mandatory;
 
   // This is a dodgy hack until I can work out how to get the margin at the end
@@ -62,13 +61,10 @@ const App = () => {
 
   return (
     <>
-      <Nav>
-        <Logo tw="mx-4" />
-      </Nav>
-
       {tree && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
+            <Sidebar root={tree.root} />
             {path.map((node, columnIndex) => (
               <Column
                 key={node.id}

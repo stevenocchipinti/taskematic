@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro"
 import { Draggable } from "react-beautiful-dnd"
 import { Observer } from "mobx-react-lite"
-import Progress from "./Progress"
+import Progress from "../Progress"
 
 const DraggableObserver = ({ children, ...props }) => (
   <Draggable {...props}>
@@ -12,7 +12,7 @@ const DraggableObserver = ({ children, ...props }) => (
 )
 
 const Item = styled.li`
-  ${tw`flex justify-between items-center w-64 text-sm`}
+  ${tw`flex justify-between items-center text-sm`}
   ${tw`bg-white text-gray-600`}
   ${tw`transition duration-200 hover:bg-gray-100`}
   ${tw`border border-b-0 last:border-b first:rounded-t last:rounded-b`}
@@ -43,7 +43,7 @@ const DraggableCard = ({ node, index, ...props }) => {
           <Progress
             tw="h-10 w-10 m-2 flex-none"
             node={node}
-            showBoolean={node.isLeaf}
+            variant={node.isLeaf ? "checkbox" : "progress"}
             onClick={e => {
               if (node.isLeaf) {
                 e.stopPropagation()

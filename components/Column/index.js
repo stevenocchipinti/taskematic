@@ -17,19 +17,21 @@ const DroppableObserver = ({ children, ...props }) => (
   </Droppable>
 )
 
-const Container = styled.div`
-  scroll-snap-align: center;
-  max-width: 18rem;
-`
-
 const slideIn = keyframes`
   0% { transform: translateX(-30px); opacity: 0; }
   100% { transform: translateX(0); opacity: 1; }
 `
 
+const Container = styled.div`
+  scroll-snap-align: center;
+  ${tw`last:pr-3`}
+`
+
 const Column = styled.div`
-  ${tw`w-72 bg-white rounded p-4 shadow`}
+  ${tw`mx-3 mt-6`}
+  ${tw`bg-white rounded p-4 shadow`}
   animation: ${slideIn} 0.2s ease-in-out;
+  width: min(22rem, 100vw);
 `
 
 const List = styled.ul`
@@ -66,8 +68,8 @@ const DroppableColumn = ({ node, renderChild }) => {
   return (
     <DroppableObserver droppableId={node.id}>
       {(provided, snapshot) => (
-        <Container>
-          <Column ref={ref}>
+        <Container ref={ref}>
+          <Column>
             <EditableTitle
               value={node.title}
               onChange={newTitle => node.setTitle(newTitle)}
