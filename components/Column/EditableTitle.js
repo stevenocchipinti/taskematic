@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react"
 import tw, { styled } from "twin.macro"
 
-const Title = tw.h2`text-lg text-gray-600 font-semibold mb-4 align-top`
+const Title = styled.h2`
+  ${tw`text-lg text-gray-600 font-semibold align-top`}
+  ${tw`m-2 p-2 pb-1 pr-0 mr-0`}
+`
 const TitleInput = styled.input`
   ${tw`w-full text-lg text-gray-600 font-semibold`}
-  ${tw`py-1 px-2 mb-3 -mt-1 -mx-2`}
+  ${tw`m-2 p-2 pb-1 pr-0 mr-0`}
 `
 
-const EditableTitle = ({ onChange, value }) => {
+const EditableTitle = ({ onChange, value, ...props }) => {
   const [editable, setEditable] = useState(false)
   const [newTitle, setNewTitle] = useState(value)
 
@@ -28,7 +31,7 @@ const EditableTitle = ({ onChange, value }) => {
   }
 
   return editable ? (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} {...props}>
       <TitleInput
         ref={inputRef}
         value={newTitle}
@@ -37,7 +40,9 @@ const EditableTitle = ({ onChange, value }) => {
       />
     </form>
   ) : (
-    <Title onClick={() => setEditable(true)}>{value}</Title>
+    <Title onClick={() => setEditable(true)} {...props}>
+      {value}
+    </Title>
   )
 }
 

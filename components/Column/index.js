@@ -3,8 +3,8 @@ import { keyframes } from "styled-components"
 import { useEffect, useRef, useState } from "react"
 import { Observer } from "mobx-react-lite"
 import { Droppable } from "react-beautiful-dnd"
+import Menu from "./Menu"
 
-import DeleteButton from "./DeleteButton"
 import AddItemForm from "./AddItemForm"
 import EditableTitle from "./EditableTitle"
 import EditableContent from "../EditableContent"
@@ -29,7 +29,7 @@ const Container = styled.div`
 
 const Column = styled.div`
   ${tw`mx-3 mt-6`}
-  ${tw`bg-white rounded p-4 shadow`}
+  ${tw`bg-white rounded shadow`}
   animation: ${slideIn} 0.2s ease-in-out;
   width: min(22rem, 100vw);
 `
@@ -49,55 +49,56 @@ const List = styled.ul`
   }
 `
 
-const Actions = tw.div`flex mt-2 gap-2`
+const ColumnHeader = tw.div`flex justify-between align-top`
+const ColumnBody = tw.div`pb-2 px-4`
+const ColumnFooter = tw.div`flex p-4 pt-0 gap-2`
 
 const DroppableColumn = ({ node, renderChild }) => {
-  const [newItemTitle, setNewItemTitle] = useState("")
-
   const ref = useRef(null)
+  const addItemInputRef = useRef(null)
+
   useEffect(() => {
+    if (addItemInputRef.current) addItemInputRef.current.focus()
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" })
   }, [])
-
-  const onSubmit = e => {
-    e.preventDefault()
-    node.createChild({ title: newItemTitle })
-    setNewItemTitle("")
-  }
 
   return (
     <DroppableObserver droppableId={node.id}>
       {(provided, snapshot) => (
         <Container ref={ref}>
           <Column>
-            <EditableTitle
-              value={node.title}
-              onChange={newTitle => node.setTitle(newTitle)}
-            />
-
-            {node.content && (
-              <EditableContent
-                value={node.content}
-                onChange={newContent => node.setContent(newContent)}
+            <ColumnHeader>
+              <EditableTitle
+                tw="flex-grow"
+                value={node.title}
+                onChange={newTitle => node.setTitle(newTitle)}
               />
-            )}
+              <Menu node={node} />
+            </ColumnHeader>
 
-            <List
-              ref={provided.innerRef}
-              isDraggingOver={snapshot.isDraggingOver}
-              {...provided.droppableProps}
-            >
-              {node.children.map((child, index) => renderChild(child, index))}
-              {provided.placeholder}
-            </List>
-            <Actions>
+            <ColumnBody>
+              {node.content && (
+                <EditableContent
+                  value={node.content}
+                  onChange={newContent => node.setContent(newContent)}
+                />
+              )}
+              <List
+                ref={provided.innerRef}
+                isDraggingOver={snapshot.isDraggingOver}
+                {...provided.droppableProps}
+              >
+                {node.children.map((child, index) => renderChild(child, index))}
+                {provided.placeholder}
+              </List>
+            </ColumnBody>
+
+            <ColumnFooter>
               <AddItemForm
-                onSubmit={onSubmit}
-                value={newItemTitle}
-                onChange={e => setNewItemTitle(e.target.value)}
+                ref={addItemInputRef}
+                onSubmit={newTitle => node.createChild({ title: newTitle })}
               />
-              <DeleteButton onClick={() => node.delete()} />
-            </Actions>
+            </ColumnFooter>
           </Column>
         </Container>
       )}

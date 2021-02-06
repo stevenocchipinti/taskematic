@@ -652,6 +652,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@szhsin/react-menu@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@szhsin/react-menu/-/react-menu-1.5.0.tgz#b55afd57d2eb6be1d420fc636c8fa8fd8f6785d8"
+  integrity sha512-FQo/6y/CsfNRkdTYUnoCd84oQIY7kuZscx5Q0HAtzJdbgC15pTGMJ9gv2zH6bBSyq4MHj6AIOxHtt2V1kpiiHw==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.12.tgz#4d8e9e51eb265552a7e4f1ff2219ab6133bdfb2d"

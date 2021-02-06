@@ -1,11 +1,10 @@
-import tw, { styled } from "twin.macro"
-
-const TrashIcon = () => (
+const TrashIcon = props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
+    {...props}
   >
     <path
       strokeLinecap="round"
@@ -16,15 +15,4 @@ const TrashIcon = () => (
   </svg>
 )
 
-const StyledButton = styled.button`
-  ${tw`w-10 h-10 border rounded p-2 items-center`}
-  ${tw`text-gray-400 hover:text-gray-500`}
-`
-
-const DeleteButton = props => (
-  <StyledButton {...props}>
-    <TrashIcon />
-  </StyledButton>
-)
-
-export default DeleteButton
+export default TrashIcon
