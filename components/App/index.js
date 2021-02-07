@@ -5,10 +5,7 @@ import { DragDropContext } from "react-beautiful-dnd"
 import Sidebar from "../Sidebar"
 import Column from "../Column"
 import Item from "../Item"
-import { createTree } from "../../lib/Tree"
-
-// Fake data
-import data from "../../data"
+import { createTree, TaskStore } from "../../lib/Tree"
 
 const Columns = styled.div`
   ${tw`flex flex-grow bg-gray-100 overflow-auto`}

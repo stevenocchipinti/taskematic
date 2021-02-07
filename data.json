@@ -1,0 +1,124 @@
+{
+  "projects": {
+    "test": {
+      "nodes": {
+        "0": {
+          "title": "Taskematic project",
+          "children_ids": { "1": true, "15": true, "28": true }
+        },
+        "1": {
+          "title": "Functionality",
+          "children_ids": {
+            "2": true,
+            "6": true,
+            "9": true,
+            "10": true,
+            "11": true
+          }
+        },
+        "2": {
+          "title": "Dragging and dropping",
+          "children_ids": { "3": true, "4": true, "5": true }
+        },
+        "3": { "title": "Drag within the same column", "done": true },
+        "4": { "title": "Drag to a different column", "done": true },
+        "5": { "title": "Drag on top of another card" },
+        "6": {
+          "title": "Edit tasks",
+          "children_ids": { "7": true, "8": true }
+        },
+        "7": { "title": "Edit titles", "done": true },
+        "8": {
+          "title": "Edit descriptions",
+          "done": true,
+          "content": "# h1\n## h2\n### h3\n#### h4\n##### h5\n###### h6\n\nThis is **bold** and _italic_.\n\nunordered:\n\n- asdf\n- adsf\n\nordered:\n\n1. sdf\n2. sdf\n\n```\ncode block\n```\n\n---\n\nThis is `inline code` too.\n\n- [ ] checklist\n- [ ] asdf\n\nAn [inline link](/asdf) too\n\n> quote\n\nline with just\none line break"
+        },
+        "9": {
+          "title": "Delete tasks",
+          "content": "This could be an archive feature in the future.",
+          "done": true
+        },
+        "10": { "title": "Add new tasks", "done": true },
+        "11": {
+          "title": "Automatic progress for non-leaf nodes",
+          "children_ids": { "11": true, "12": true, "13": true }
+        },
+        "12": {
+          "title": "Calculate progress with recursive algorithm",
+          "done": true
+        },
+        "13": {
+          "title": "Display percentage for non-leaf nodes",
+          "done": true
+        },
+        "14": {
+          "title": "Display boolean (tick) for leaf nodes",
+          "done": true
+        },
+        "15": {
+          "title": "Visuals",
+          "children_ids": {
+            "16": true,
+            "17": true,
+            "18": true,
+            "19": true,
+            "20": true,
+            "21": true,
+            "25": true
+          }
+        },
+        "16": { "title": "Optimize column widths for mobile" },
+        "17": { "title": "Choose a primary brand colour" },
+        "18": { "title": "Add a favicon" },
+        "19": { "title": "Dark mode" },
+        "20": { "title": "Make and use a logo", "done": true },
+        "21": {
+          "title": "Columns for each level of nesting",
+          "children_ids": { "22": true, "23": true, "24": true }
+        },
+        "22": {
+          "title": "Clicking on a card opens that node in a new column",
+          "done": true
+        },
+        "23": {
+          "title": "Show which parent node the column belongs to",
+          "done": true
+        },
+        "24": {
+          "title": "Allow a leaf node to be marked as done or not",
+          "done": true
+        },
+        "25": {
+          "title": "Fancy circular progress indicator",
+          "children_ids": { "26": true, "27": true }
+        },
+        "26": {
+          "title": "Display percentage for non-leaf nodes",
+          "done": true
+        },
+        "27": {
+          "title": "Display boolean (tick) for leaf nodes",
+          "done": true
+        },
+        "28": {
+          "title": "Persistence",
+          "children_ids": { "29": true, "30": true, "31": true }
+        },
+        "29": {
+          "title": "Temporarily read data from source code",
+          "done": true
+        },
+        "30": { "title": "Store data in local storage (Local Forage?)" },
+        "31": { "title": "Store data in the cloud (Firebase)" }
+      }
+    }
+  },
+  "users": {
+    "BRrO7oj34ec43R600lwJSkWLHqG2": {
+      "projects": {
+        "test": true
+      },
+      "username": "anon"
+    }
+  }
+}
