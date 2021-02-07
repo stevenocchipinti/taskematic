@@ -55,10 +55,8 @@ const ColumnFooter = tw.div`flex p-4 pt-0 gap-2`
 
 const DroppableColumn = ({ node, renderChild }) => {
   const ref = useRef(null)
-  const addItemInputRef = useRef(null)
 
   useEffect(() => {
-    if (addItemInputRef.current) addItemInputRef.current.focus()
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" })
   }, [])
 
@@ -95,7 +93,6 @@ const DroppableColumn = ({ node, renderChild }) => {
 
             <ColumnFooter>
               <AddItemForm
-                ref={addItemInputRef}
                 onSubmit={newTitle => node.createChild({ title: newTitle })}
               />
             </ColumnFooter>
