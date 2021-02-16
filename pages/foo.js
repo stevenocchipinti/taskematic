@@ -21,18 +21,19 @@ const Project = observer(() => {
 
   if (!project || project.isLoading) return <h1>Loading...</h1>
   return (
-    <>
+    <main tw="m-4 p-4">
       <h1>{project.name}</h1>
       <Node node={project.root} />
 
       <button
+        tw="my-4 p-4 rounded text-center bg-blue-500 text-white"
         onClick={() => {
           project.addTask()
         }}
       >
         Add a new node
       </button>
-    </>
+    </main>
   )
 })
 
