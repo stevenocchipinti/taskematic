@@ -1,115 +1,119 @@
 {
   "projects": {
     "test": {
+      "data": {
+        "name": "Taskematic!",
+        "root_id": "item0"
+      },
       "nodes": {
-        "0": {
+        "item0": {
           "title": "Taskematic project",
-          "children_ids": { "1": true, "15": true, "28": true }
+          "children_ids": { "item1": true, "item15": true, "item28": true }
         },
-        "1": {
+        "item1": {
           "title": "Functionality",
           "children_ids": {
-            "2": true,
-            "6": true,
-            "9": true,
-            "10": true,
-            "11": true
+            "item2": true,
+            "item6": true,
+            "item9": true,
+            "item10": true,
+            "item11": true
           }
         },
-        "2": {
+        "item2": {
           "title": "Dragging and dropping",
-          "children_ids": { "3": true, "4": true, "5": true }
+          "children_ids": { "item3": true, "item4": true, "item5": true }
         },
-        "3": { "title": "Drag within the same column", "done": true },
-        "4": { "title": "Drag to a different column", "done": true },
-        "5": { "title": "Drag on top of another card" },
-        "6": {
+        "item3": { "title": "Drag within the same column", "done": true },
+        "item4": { "title": "Drag to a different column", "done": true },
+        "item5": { "title": "Drag on top of another card" },
+        "item6": {
           "title": "Edit tasks",
-          "children_ids": { "7": true, "8": true }
+          "children_ids": { "item7": true, "item8": true }
         },
-        "7": { "title": "Edit titles", "done": true },
-        "8": {
+        "item7": { "title": "Edit titles", "done": true },
+        "item8": {
           "title": "Edit descriptions",
           "done": true,
           "content": "# h1\n## h2\n### h3\n#### h4\n##### h5\n###### h6\n\nThis is **bold** and _italic_.\n\nunordered:\n\n- asdf\n- adsf\n\nordered:\n\n1. sdf\n2. sdf\n\n```\ncode block\n```\n\n---\n\nThis is `inline code` too.\n\n- [ ] checklist\n- [ ] asdf\n\nAn [inline link](/asdf) too\n\n> quote\n\nline with just\none line break"
         },
-        "9": {
+        "item9": {
           "title": "Delete tasks",
           "content": "This could be an archive feature in the future.",
           "done": true
         },
-        "10": { "title": "Add new tasks", "done": true },
-        "11": {
+        "item10": { "title": "Add new tasks", "done": true },
+        "item11": {
           "title": "Automatic progress for non-leaf nodes",
-          "children_ids": { "11": true, "12": true, "13": true }
+          "children_ids": { "item12": true, "item13": true }
         },
-        "12": {
+        "item12": {
           "title": "Calculate progress with recursive algorithm",
           "done": true
         },
-        "13": {
+        "item13": {
           "title": "Display percentage for non-leaf nodes",
           "done": true
         },
-        "14": {
+        "item14": {
           "title": "Display boolean (tick) for leaf nodes",
           "done": true
         },
-        "15": {
+        "item15": {
           "title": "Visuals",
           "children_ids": {
-            "16": true,
-            "17": true,
-            "18": true,
-            "19": true,
-            "20": true,
-            "21": true,
-            "25": true
+            "item16": true,
+            "item17": true,
+            "item18": true,
+            "item19": true,
+            "item20": true,
+            "item21": true,
+            "item25": true
           }
         },
-        "16": { "title": "Optimize column widths for mobile" },
-        "17": { "title": "Choose a primary brand colour" },
-        "18": { "title": "Add a favicon" },
-        "19": { "title": "Dark mode" },
-        "20": { "title": "Make and use a logo", "done": true },
-        "21": {
+        "item16": { "title": "Optimize column widths for mobile" },
+        "item17": { "title": "Choose a primary brand colour" },
+        "item18": { "title": "Add a favicon" },
+        "item19": { "title": "Dark mode" },
+        "item20": { "title": "Make and use a logo", "done": true },
+        "item21": {
           "title": "Columns for each level of nesting",
-          "children_ids": { "22": true, "23": true, "24": true }
+          "children_ids": { "item22": true, "item23": true, "item24": true }
         },
-        "22": {
+        "item22": {
           "title": "Clicking on a card opens that node in a new column",
           "done": true
         },
-        "23": {
+        "item23": {
           "title": "Show which parent node the column belongs to",
           "done": true
         },
-        "24": {
+        "item24": {
           "title": "Allow a leaf node to be marked as done or not",
           "done": true
         },
-        "25": {
+        "item25": {
           "title": "Fancy circular progress indicator",
-          "children_ids": { "26": true, "27": true }
+          "children_ids": { "item26": true, "item27": true }
         },
-        "26": {
+        "item26": {
           "title": "Display percentage for non-leaf nodes",
           "done": true
         },
-        "27": {
+        "item27": {
           "title": "Display boolean (tick) for leaf nodes",
           "done": true
         },
-        "28": {
+        "item28": {
           "title": "Persistence",
-          "children_ids": { "29": true, "30": true, "31": true }
+          "children_ids": { "item29": true, "item30": true, "item31": true }
         },
-        "29": {
+        "item29": {
           "title": "Temporarily read data from source code",
           "done": true
         },
-        "30": { "title": "Store data in local storage (Local Forage?)" },
-        "31": { "title": "Store data in the cloud (Firebase)" }
+        "item30": { "title": "Store data in local storage (Local Forage?)" },
+        "item31": { "title": "Store data in the cloud (Firebase)" }
       }
     }
   },

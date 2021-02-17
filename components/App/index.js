@@ -1,11 +1,13 @@
 import tw, { styled } from "twin.macro"
 import { useState, useEffect } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
+import { observer } from "mobx-react-lite"
+import { reaction } from "mobx"
 
 import Sidebar from "../Sidebar"
 import Column from "../Column"
 import Item from "../Item"
-import { createTree, TaskStore } from "../../lib/Tree"
+import { ProjectStore } from "../../lib/ProjectStore"
 
 const Columns = styled.div`
   ${tw`flex flex-grow bg-gray-100 overflow-auto`}
@@ -18,20 +20,29 @@ const Columns = styled.div`
   }
 `
 
-const App = () => {
-  const [tree, setTree] = useState(null)
-  const [path, setPath] = useState([])
+const App = observer(() => {
+  const [project, setProject] = useState(null)
+  // const [path, setPath] = useState([])
+  const [cursor, setCursor] = useState(null)
 
   useEffect(() => {
-    const tree = createTree(data, {
-      delete: deletedNode => setPath(deletedNode.parent.path),
-    })
-    setTree(tree)
-    setPath(tree.root.path)
+    // const tree = createTree(data, {
+    //   delete: deletedNode => setPath(deletedNode.parent.path),
+    // })
+    const projectStore = new ProjectStore()
+    setProject(projectStore)
+    return reaction(
+      () => projectStore.root,
+      () => {
+        setCursor(projectStore.root)
+      }
+    )
+    // setPath(projectStore.root)
   }, [])
 
   function onDragEnd(result) {
     const { draggableId, source, destination } = result
+    return null
 
     // Dropped outside the list
     if (!destination) return
@@ -56,38 +67,42 @@ const App = () => {
   const withinCurrentPath = givenPath =>
     stringifyPath(path).match(stringifyPath(givenPath))
 
+  const node = cursor
+  console.log("node", node)
+
   return (
     <>
-      {tree && (
+      {project?.ready && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Columns>
-            <Sidebar root={tree.root} />
-            {path.map((node, columnIndex) => (
+            <Sidebar project={project} />
+            {/* {path.map((node, columnIndex) => ( */}
+            {node && (
               <Column
                 key={node.id}
                 node={node}
                 renderChild={(childNode, childIndex) => {
-                  const isSelected = withinCurrentPath(childNode.path)
+                  // const isSelected = withinCurrentPath(childNode.path)
                   return (
                     <Item
                       key={childNode.id}
                       node={childNode}
                       index={childIndex}
-                      isSelected={isSelected}
-                      hasReducedFocus={!!path[columnIndex + 1]}
-                      onClick={() => {
-                        setPath(isSelected ? node.path : childNode.path)
-                      }}
+                      // isSelected={isSelected}
+                      // hasReducedFocus={!!path[columnIndex + 1]}
+                      // onClick={() => {
+                      //   setPath(isSelected ? node.path : childNode.path)
+                      // }}
                     />
                   )
                 }}
               />
-            ))}
+            )}
           </Columns>
         </DragDropContext>
       )}
     </>
   )
-}
+})
 
 export default App

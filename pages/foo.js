@@ -1,12 +1,12 @@
 import "twin.macro"
 import { createContext, useContext, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ProjectStore } from "../lib/Tree"
+import { ProjectStore } from "../lib/ProjectStore"
 
 const ProjectContext = createContext()
 
 const ListItem = observer(({ item }) => {
-  // console.log("render", item.title)
+  console.log("render", item.title)
   return (
     <div tw="border m-1 p-2">
       {item.title}
@@ -18,6 +18,7 @@ const ListItem = observer(({ item }) => {
 })
 
 const List = observer(() => {
+  console.log("List")
   const project = useContext(ProjectContext)
   if (!project) return <h1>Loading...</h1>
   return (

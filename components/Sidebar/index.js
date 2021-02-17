@@ -19,14 +19,20 @@ const Nav = styled.nav`
   scroll-snap-align: center;
 `
 
-const Sidebar = observer(({ root }) => (
+const Sidebar = observer(({ project }) => (
   <Nav>
     <LogoLink href="/">
       <Logo tw="flex-shrink-0" />
       <Title>Taskematic</Title>
     </LogoLink>
 
-    <Progress tw="h-48 w-48 m-12 flex-none" node={root} variant="meter" />
+    {project.root && (
+      <Progress
+        tw="h-48 w-48 m-12 flex-none"
+        item={project.root}
+        variant="meter"
+      />
+    )}
   </Nav>
 ))
 
