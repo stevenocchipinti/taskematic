@@ -22,22 +22,15 @@ const Columns = styled.div`
 
 const App = observer(() => {
   const [project, setProject] = useState(null)
-  // const [path, setPath] = useState([])
   const [cursor, setCursor] = useState(null)
 
   useEffect(() => {
-    // const tree = createTree(data, {
-    //   delete: deletedNode => setPath(deletedNode.parent.path),
-    // })
     const projectStore = new ProjectStore()
     setProject(projectStore)
     return reaction(
-      () => projectStore.root,
-      () => {
-        setCursor(projectStore.root)
-      }
+      () => projectStore.ready,
+      () => setCursor(projectStore.root)
     )
-    // setPath(projectStore.root)
   }, [])
 
   function onDragEnd(result) {
@@ -63,45 +56,30 @@ const App = observer(() => {
     }
   }
 
-  const stringifyPath = node => node.map(n => n.id).join("/")
-  const withinCurrentPath = givenPath =>
-    stringifyPath(path).match(stringifyPath(givenPath))
-
-  const node = cursor
-  console.log("node", node)
-
   return (
-    <>
-      {project?.ready && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Columns>
-            <Sidebar project={project} />
-            {/* {path.map((node, columnIndex) => ( */}
-            {node && (
-              <Column
-                key={node.id}
-                node={node}
-                renderChild={(childNode, childIndex) => {
-                  // const isSelected = withinCurrentPath(childNode.path)
-                  return (
-                    <Item
-                      key={childNode.id}
-                      node={childNode}
-                      index={childIndex}
-                      // isSelected={isSelected}
-                      // hasReducedFocus={!!path[columnIndex + 1]}
-                      // onClick={() => {
-                      //   setPath(isSelected ? node.path : childNode.path)
-                      // }}
-                    />
-                  )
-                }}
-              />
-            )}
-          </Columns>
-        </DragDropContext>
-      )}
-    </>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Columns>
+        <Sidebar project={project} />
+        {project?.ready &&
+          cursor?.path.map((node, columnIndex) => (
+            <Column key={node.id} node={node}>
+              {node.children.map((childNode, childIndex) => {
+                const isSelected = cursor.path.includes(childNode)
+                return (
+                  <Item
+                    key={childNode.id}
+                    node={childNode}
+                    index={childIndex}
+                    isSelected={isSelected}
+                    hasReducedFocus={!!cursor.path[columnIndex + 1]}
+                    onClick={() => setCursor(isSelected ? node : childNode)}
+                  />
+                )
+              })}
+            </Column>
+          ))}
+      </Columns>
+    </DragDropContext>
   )
 })
 

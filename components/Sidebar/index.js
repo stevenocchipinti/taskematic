@@ -26,13 +26,11 @@ const Sidebar = observer(({ project }) => (
       <Title>Taskematic</Title>
     </LogoLink>
 
-    {project.root && (
-      <Progress
-        tw="h-48 w-48 m-12 flex-none"
-        node={project.root}
-        variant="meter"
-      />
-    )}
+    <Progress
+      tw="h-48 w-48 m-12 flex-none"
+      node={project?.root}
+      variant="meter"
+    />
   </Nav>
 ))
 
