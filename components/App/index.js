@@ -7,7 +7,7 @@ import { reaction } from "mobx"
 import Sidebar from "../Sidebar"
 import Column from "../Column"
 import Item from "../Item"
-import { ProjectStore } from "../../lib/ProjectStore"
+import ProjectStore from "../../lib/ProjectStore"
 
 const Columns = styled.div`
   ${tw`flex flex-grow bg-gray-100 overflow-auto`}

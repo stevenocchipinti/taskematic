@@ -91,7 +91,7 @@ const DroppableColumn = ({ node, children }) => {
 
             <ColumnFooter>
               <AddItemForm
-                onSubmit={newTitle => node.createChild({ title: newTitle })}
+                onSubmit={newTitle => node.createChildNode({ title: newTitle })}
               />
             </ColumnFooter>
           </Column>
