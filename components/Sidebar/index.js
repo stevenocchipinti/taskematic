@@ -29,7 +29,7 @@ const Sidebar = observer(({ project }) => (
     {project.root && (
       <Progress
         tw="h-48 w-48 m-12 flex-none"
-        item={project.root}
+        node={project.root}
         variant="meter"
       />
     )}
