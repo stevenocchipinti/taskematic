@@ -1,13 +1,14 @@
 import tw, { styled } from "twin.macro"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
+import { when } from "mobx"
 import { observer } from "mobx-react-lite"
-import { reaction } from "mobx"
 
 import Sidebar from "../Sidebar"
 import Column from "../Column"
 import Item from "../Item"
-import ProjectStore from "../../lib/ProjectStore"
+import { useProject } from "../../lib/ProjectStore"
+import { UiStoreProvider, useUiStore } from "../../lib/UiStore"
 
 const Columns = styled.div`
   ${tw`flex flex-grow bg-gray-100 overflow-auto`}
@@ -21,17 +22,15 @@ const Columns = styled.div`
 `
 
 const App = observer(() => {
-  const [project, setProject] = useState(null)
-  const [cursor, setCursor] = useState(null)
+  const project = useProject("test")
+  const ui = useUiStore()
 
-  useEffect(() => {
-    const projectStore = new ProjectStore()
-    setProject(projectStore)
-    return reaction(
-      () => projectStore.ready,
-      () => setCursor(projectStore.root)
+  useEffect(() =>
+    when(
+      () => project.ready && !ui.cursor,
+      () => ui.setCursor(project.root)
     )
-  }, [])
+  )
 
   function onDragEnd(result) {
     const { draggableId, source, destination } = result
@@ -61,18 +60,18 @@ const App = observer(() => {
       <Columns>
         <Sidebar project={project} />
         {project?.ready &&
-          cursor?.path.map((node, columnIndex) => (
+          ui.cursor?.path.map((node, columnIndex) => (
             <Column key={node.id} node={node}>
               {node.children.map((childNode, childIndex) => {
-                const isSelected = cursor.path.includes(childNode)
+                const isSelected = ui.cursor.path.includes(childNode)
                 return (
                   <Item
                     key={childNode.id}
                     node={childNode}
                     index={childIndex}
                     isSelected={isSelected}
-                    hasReducedFocus={!!cursor.path[columnIndex + 1]}
-                    onClick={() => setCursor(isSelected ? node : childNode)}
+                    hasReducedFocus={!!ui.cursor.path[columnIndex + 1]}
+                    onClick={() => ui.setCursor(isSelected ? node : childNode)}
                   />
                 )
               })}
@@ -83,4 +82,10 @@ const App = observer(() => {
   )
 })
 
-export default App
+const AppWrapper = () => (
+  <UiStoreProvider>
+    <App />
+  </UiStoreProvider>
+)
+
+export default AppWrapper
