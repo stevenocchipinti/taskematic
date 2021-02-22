@@ -34,24 +34,25 @@ const App = observer(() => {
 
   function onDragEnd(result) {
     const { draggableId, source, destination } = result
-    return null
 
     // Dropped outside the list
     if (!destination) return
 
-    const srcNode = tree.root.find(n => n.id === draggableId)
-    const dstNode = tree.root.find(n => n.id === destination.droppableId)
+    const srcNodeId = draggableId
+    const dstNodeId = destination.droppableId
 
     // Reorder within the same droppable
     if (source.droppableId === destination.droppableId) {
-      srcNode.setIndex(destination.index)
-      setPath(srcNode.path)
+      project.setIndex(srcNodeId, destination.index)
+      // srcNode.setIndex(destination.index)
+      // setPath(srcNode.path)
 
       // Move to a different column
     } else {
-      const removedNode = srcNode.delete()
-      dstNode.addChild(removedNode, destination.index)
-      setPath(dstNode.path)
+      project.move(srcNodeId, dstNodeId, destination.index)
+      // const removedNode = srcNode.delete()
+      // dstNode.addChild(removedNode, destination.index)
+      // setPath(dstNode.path)
     }
   }
 
