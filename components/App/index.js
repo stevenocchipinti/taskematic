@@ -41,18 +41,12 @@ const App = observer(() => {
     const srcNodeId = draggableId
     const dstNodeId = destination.droppableId
 
-    // Reorder within the same droppable
     if (source.droppableId === destination.droppableId) {
-      project.setIndex(srcNodeId, destination.index)
-      // srcNode.setIndex(destination.index)
-      // setPath(srcNode.path)
-
-      // Move to a different column
+      // Reorder within the same droppable
+      project.moveNode(srcNodeId, destination.index)
     } else {
-      project.move(srcNodeId, dstNodeId, destination.index)
-      // const removedNode = srcNode.delete()
-      // dstNode.addChild(removedNode, destination.index)
-      // setPath(dstNode.path)
+      // Move to a different column
+      project.moveNode(srcNodeId, destination.index, dstNodeId)
     }
   }
 
