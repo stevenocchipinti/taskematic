@@ -21,8 +21,8 @@ const Columns = styled.div`
   }
 `
 
-const App = observer(() => {
-  const project = useProject("test")
+const App = observer(({ projectId }) => {
+  const project = useProject(projectId)
   const ui = useUiStore()
 
   useEffect(() =>
