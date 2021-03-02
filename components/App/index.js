@@ -8,7 +8,7 @@ import Sidebar from "../Sidebar"
 import Column from "../Column"
 import Item from "../Item"
 import { useProject } from "../../lib/ProjectStore"
-import { UiStoreProvider, useUiStore } from "../../lib/UiStore"
+import { useUiStore } from "../../lib/UiStore"
 
 const Columns = styled.div`
   ${tw`flex flex-grow bg-gray-100 overflow-auto`}
@@ -77,10 +77,4 @@ const App = observer(() => {
   )
 })
 
-const AppWrapper = () => (
-  <UiStoreProvider>
-    <App />
-  </UiStoreProvider>
-)
-
-export default AppWrapper
+export default App
