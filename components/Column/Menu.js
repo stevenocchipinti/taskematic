@@ -8,7 +8,7 @@ import "@szhsin/react-menu/dist/index.css"
 import TrashIcon from "../icons/TrashIcon"
 import DotsIcon from "../icons/DotsIcon"
 import DescriptionIcon from "../icons/DescriptionIcon"
-import { useUiStore } from "../../lib/UiStore"
+import { useUiStore } from "../../lib/stores"
 
 const StyledButton = styled.button`
   ${tw`m-2 p-2 w-10 h-10 rounded items-center`}

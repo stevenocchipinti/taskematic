@@ -3,7 +3,7 @@ import Firebase from "firebase/app"
 import { useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { useRouter } from "next/router"
-import { useUserStore } from "../../lib/UserStore"
+import { useUserStore } from "../../lib/stores"
 
 // Docs: https://firebase.google.com/docs/auth/web/email-link-auth
 const LinkAccountsPage = observer(() => {

@@ -1,17 +1,17 @@
 import { GlobalStyles } from "twin.macro"
 import tw from "twin.macro"
 import "typeface-montserrat"
-import { UserStoreProvider } from "../lib/UserStore"
+import { RootStoreProvider } from "../lib/stores"
 
 const Container = tw.div`flex flex-col min-h-screen text-gray-700`
 
 const App = ({ Component, pageProps }) => (
-  <UserStoreProvider>
+  <RootStoreProvider>
     <Container>
       <GlobalStyles />
       <Component {...pageProps} />
     </Container>
-  </UserStoreProvider>
+  </RootStoreProvider>
 )
 
 export default App

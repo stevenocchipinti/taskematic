@@ -2,7 +2,7 @@ import "twin.macro"
 import { useState } from "react"
 import Link from "next/link"
 import { observer } from "mobx-react-lite"
-import { useUserStore } from "../lib/UserStore"
+import { useUserStore } from "../lib/stores"
 
 const LandingPage = observer(() => {
   const [email, setEmail] = useState("")
