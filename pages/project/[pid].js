@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import tw, { styled } from "twin.macro"
 import { DragDropContext } from "react-beautiful-dnd"
@@ -9,9 +9,7 @@ import Sidebar from "../../components/Sidebar"
 import Column from "../../components/Column"
 import Item from "../../components/Item"
 
-// TODO: Update this later
-import { useProjectStore } from "../../lib/stores"
-import { useUiStore } from "../../lib/stores"
+import { useUiStore, useProjectStore } from "../../lib/stores"
 
 const Columns = styled.div`
   ${tw`flex flex-grow bg-gray-100 overflow-auto`}
@@ -30,16 +28,21 @@ const App = observer(() => {
 
   const projectStore = useProjectStore()
   const ui = useUiStore()
+  const [project, setProject] = useState(null)
 
-  const project = projectStore.getProject(projectId)
+  useEffect(() => {
+    const project = projectStore.getProject(projectId)
+    setProject(project)
+    return () => project.disconnect()
+  }, [projectStore, projectId])
 
   useEffect(
     () =>
       when(
-        () => project.ready && !ui.cursor,
+        () => project?.ready && !ui.cursor,
         () => ui.setCursor(project.root)
       ),
-    [project]
+    [project, ui]
   )
 
   function onDragEnd(result) {
