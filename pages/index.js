@@ -1,96 +1,104 @@
-import tw, { styled } from "twin.macro"
-import { useState, useEffect } from "react"
-import { DragDropContext } from "react-beautiful-dnd"
+import "twin.macro"
+import { useState } from "react"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { observer } from "mobx-react-lite"
+import { useProjectStore, useUserStore } from "../lib/stores"
 
-import Sidebar from "../components/Sidebar"
-import Column from "../components/Column"
-import Item from "../components/Item"
-import { createTree } from "../lib/Tree"
+const LandingPage = observer(() => {
+  const [email, setEmail] = useState("")
 
-// Fake data
-import data from "../data"
+  const router = useRouter()
 
-const Columns = styled.div`
-  ${tw`flex flex-grow bg-gray-100 overflow-auto`}
-  scroll-snap-type: x mandatory;
+  const projectStore = useProjectStore()
+  const userStore = useUserStore()
+  const { user } = userStore
 
-  // This is a dodgy hack until I can work out how to get the margin at the end
-  &:after {
-    content: ".";
-    color: transparent;
-  }
-`
+  const userState = !userStore.ready
+    ? "Loading..."
+    : user
+    ? `Logged in as ${user.uid} ${user.isAnonymous ? "(anon)" : ""}`
+    : "Logged out"
 
-const App = () => {
-  const [tree, setTree] = useState(null)
-  const [path, setPath] = useState([])
-
-  useEffect(() => {
-    const tree = createTree(data, {
-      delete: deletedNode => setPath(deletedNode.parent.path),
-    })
-    setTree(tree)
-    setPath(tree.root.path)
-  }, [])
-
-  function onDragEnd(result) {
-    const { draggableId, source, destination } = result
-
-    // Dropped outside the list
-    if (!destination) return
-
-    const srcNode = tree.root.find(n => n.id === draggableId)
-    const dstNode = tree.root.find(n => n.id === destination.droppableId)
-
-    // Reorder within the same droppable
-    if (source.droppableId === destination.droppableId) {
-      srcNode.setIndex(destination.index)
-      setPath(srcNode.path)
-
-      // Move to a different column
-    } else {
-      const removedNode = srcNode.delete()
-      dstNode.addChild(removedNode, destination.index)
-      setPath(dstNode.path)
-    }
+  const signInWithEmail = e => {
+    e.preventDefault()
+    if (email) userStore.signInWithEmail(email)
   }
 
-  const stringifyPath = node => node.map(n => n.id).join("/")
-  const withinCurrentPath = givenPath =>
-    stringifyPath(path).match(stringifyPath(givenPath))
+  const linkAnonymousWithEmail = e => {
+    e.preventDefault()
+    if (email) userStore.linkAnonymousWithEmail(email)
+  }
+
+  const createNewProject = () => {
+    projectStore
+      .createProject()
+      .then(projectId => router.push(`/project/${projectId}`))
+      .catch(e => console.error("nope", e))
+  }
 
   return (
-    <>
-      {tree && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Columns>
-            <Sidebar root={tree.root} />
-            {path.map((node, columnIndex) => (
-              <Column
-                key={node.id}
-                node={node}
-                renderChild={(childNode, childIndex) => {
-                  const isSelected = withinCurrentPath(childNode.path)
-                  return (
-                    <Item
-                      key={childNode.id}
-                      node={childNode}
-                      index={childIndex}
-                      isSelected={isSelected}
-                      hasReducedFocus={!!path[columnIndex + 1]}
-                      onClick={() => {
-                        setPath(isSelected ? node.path : childNode.path)
-                      }}
-                    />
-                  )
-                }}
-              />
-            ))}
-          </Columns>
-        </DragDropContext>
-      )}
-    </>
-  )
-}
+    <main tw="p-4 text-center">
+      <h1 tw="text-6xl">Taskematic</h1>
+      <p tw="my-4">
+        A hierarchical to do list - v{process.env.NEXT_PUBLIC_SHA}
+      </p>
+      <p tw="my-4">{userState}</p>
 
-export default App
+      {userStore.ready && (
+        <div tw="my-24 mx-auto flex flex-col justify-center gap-8 max-w-xl text-lg">
+          <Link href="/project/taskematic" passHref>
+            <a tw="p-4 border">🐶 Go to the Taskematic project</a>
+          </Link>
+
+          {!user && (
+            <button
+              tw="p-4 border"
+              onClick={() => userStore.signInAnonymously()}
+            >
+              🎭 Sign in anonymously
+            </button>
+          )}
+
+          {user?.isAnonymous && (
+            <form onSubmit={linkAnonymousWithEmail} tw="flex">
+              <input
+                tw="flex-grow border p-4 mr-8"
+                placeholder="Email address"
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+              />
+              <button tw="p-4 border">🔗 Link email</button>
+            </form>
+          )}
+
+          {!user && (
+            <form onSubmit={signInWithEmail} tw="flex">
+              <input
+                tw="flex-grow border p-4 mr-8"
+                placeholder="Email address"
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+              />
+              <button tw="p-4 border">👨‍💻 Sign in</button>
+            </form>
+          )}
+
+          {user && (
+            <button tw="p-4 border" onClick={createNewProject}>
+              🆕 Start a project
+            </button>
+          )}
+
+          {user && (
+            <button tw="p-4 border" onClick={() => userStore.signOut()}>
+              🚪 Sign out
+            </button>
+          )}
+        </div>
+      )}
+    </main>
+  )
+})
+
+export default LandingPage

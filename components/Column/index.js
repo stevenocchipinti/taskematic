@@ -53,12 +53,10 @@ const ColumnHeader = tw.div`flex justify-between align-top`
 const ColumnBody = tw.div`pb-2 px-4`
 const ColumnFooter = tw.div`flex p-4 pt-0 gap-2`
 
-const DroppableColumn = ({ node, renderChild }) => {
+const DroppableColumn = ({ node, children }) => {
   const ref = useRef(null)
 
-  useEffect(() => {
-    if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" })
-  }, [])
+  useEffect(() => ref?.current?.scrollIntoView({ behavior: "smooth" }), [])
 
   return (
     <DroppableObserver droppableId={node.id}>
@@ -86,14 +84,14 @@ const DroppableColumn = ({ node, renderChild }) => {
                 isDraggingOver={snapshot.isDraggingOver}
                 {...provided.droppableProps}
               >
-                {node.children.map((child, index) => renderChild(child, index))}
+                {children}
                 {provided.placeholder}
               </List>
             </ColumnBody>
 
             <ColumnFooter>
               <AddItemForm
-                onSubmit={newTitle => node.createChild({ title: newTitle })}
+                onSubmit={newTitle => node.createChildNode({ title: newTitle })}
               />
             </ColumnFooter>
           </Column>

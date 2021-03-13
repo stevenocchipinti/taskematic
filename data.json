@@ -1,0 +1,128 @@
+{
+  "projects": {
+    "test": {
+      "data": {
+        "name": "Taskematic!",
+        "root_id": "item0"
+      },
+      "nodes": {
+        "item0": {
+          "title": "Taskematic project",
+          "children_ids": { "item1": true, "item15": true, "item28": true }
+        },
+        "item1": {
+          "title": "Functionality",
+          "children_ids": {
+            "item2": true,
+            "item6": true,
+            "item9": true,
+            "item10": true,
+            "item11": true
+          }
+        },
+        "item2": {
+          "title": "Dragging and dropping",
+          "children_ids": { "item3": true, "item4": true, "item5": true }
+        },
+        "item3": { "title": "Drag within the same column", "done": true },
+        "item4": { "title": "Drag to a different column", "done": true },
+        "item5": { "title": "Drag on top of another card" },
+        "item6": {
+          "title": "Edit tasks",
+          "children_ids": { "item7": true, "item8": true }
+        },
+        "item7": { "title": "Edit titles", "done": true },
+        "item8": {
+          "title": "Edit descriptions",
+          "done": true,
+          "content": "# h1\n## h2\n### h3\n#### h4\n##### h5\n###### h6\n\nThis is **bold** and _italic_.\n\nunordered:\n\n- asdf\n- adsf\n\nordered:\n\n1. sdf\n2. sdf\n\n```\ncode block\n```\n\n---\n\nThis is `inline code` too.\n\n- [ ] checklist\n- [ ] asdf\n\nAn [inline link](/asdf) too\n\n> quote\n\nline with just\none line break"
+        },
+        "item9": {
+          "title": "Delete tasks",
+          "content": "This could be an archive feature in the future.",
+          "done": true
+        },
+        "item10": { "title": "Add new tasks", "done": true },
+        "item11": {
+          "title": "Automatic progress for non-leaf nodes",
+          "children_ids": { "item12": true, "item13": true }
+        },
+        "item12": {
+          "title": "Calculate progress with recursive algorithm",
+          "done": true
+        },
+        "item13": {
+          "title": "Display percentage for non-leaf nodes",
+          "done": true
+        },
+        "item14": {
+          "title": "Display boolean (tick) for leaf nodes",
+          "done": true
+        },
+        "item15": {
+          "title": "Visuals",
+          "children_ids": {
+            "item16": true,
+            "item17": true,
+            "item18": true,
+            "item19": true,
+            "item20": true,
+            "item21": true,
+            "item25": true
+          }
+        },
+        "item16": { "title": "Optimize column widths for mobile" },
+        "item17": { "title": "Choose a primary brand colour" },
+        "item18": { "title": "Add a favicon" },
+        "item19": { "title": "Dark mode" },
+        "item20": { "title": "Make and use a logo", "done": true },
+        "item21": {
+          "title": "Columns for each level of nesting",
+          "children_ids": { "item22": true, "item23": true, "item24": true }
+        },
+        "item22": {
+          "title": "Clicking on a card opens that node in a new column",
+          "done": true
+        },
+        "item23": {
+          "title": "Show which parent node the column belongs to",
+          "done": true
+        },
+        "item24": {
+          "title": "Allow a leaf node to be marked as done or not",
+          "done": true
+        },
+        "item25": {
+          "title": "Fancy circular progress indicator",
+          "children_ids": { "item26": true, "item27": true }
+        },
+        "item26": {
+          "title": "Display percentage for non-leaf nodes",
+          "done": true
+        },
+        "item27": {
+          "title": "Display boolean (tick) for leaf nodes",
+          "done": true
+        },
+        "item28": {
+          "title": "Persistence",
+          "children_ids": { "item29": true, "item30": true, "item31": true }
+        },
+        "item29": {
+          "title": "Temporarily read data from source code",
+          "done": true
+        },
+        "item30": { "title": "Store data in local storage (Local Forage?)" },
+        "item31": { "title": "Store data in the cloud (Firebase)" }
+      }
+    }
+  },
+  "users": {
+    "BRrO7oj34ec43R600lwJSkWLHqG2": {
+      "projects": {
+        "test": true
+      },
+      "username": "anon"
+    }
+  }
+}

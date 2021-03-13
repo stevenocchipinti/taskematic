@@ -8,6 +8,7 @@ import "@szhsin/react-menu/dist/index.css"
 import TrashIcon from "../icons/TrashIcon"
 import DotsIcon from "../icons/DotsIcon"
 import DescriptionIcon from "../icons/DescriptionIcon"
+import { useUiStore } from "../../lib/stores"
 
 const StyledButton = styled.button`
   ${tw`m-2 p-2 w-10 h-10 rounded items-center`}
@@ -23,9 +24,17 @@ const MenuButton = forwardRef((props, ref) => (
 const MenuItem = tw(ReactMenuItem)`px-4`
 
 const Menu = ({ node }) => {
+  const ui = useUiStore()
+
+  const deleteNode = () => {
+    const parent = node.parent
+    node.delete()
+    ui.setCursor(parent)
+  }
+
   return (
     <ReactMenu align="end" menuButton={<MenuButton>Open menu</MenuButton>}>
-      <MenuItem onClick={() => node.delete()}>
+      <MenuItem onClick={() => deleteNode()}>
         <TrashIcon tw="w-4 h-4 mr-2" /> Delete
       </MenuItem>
       {!node.content && (

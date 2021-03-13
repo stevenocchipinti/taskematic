@@ -42,11 +42,13 @@ const Container = styled.div`
 
 const Progress = observer(
   ({ node, variant = "progress", onClick, ...props }) => {
-    const percentage = node.progress
+    const percentage = node?.progress || 0
     const fg = colorForPercentage(percentage)
-    const doneChildren = node.children.filter(n => n.progress == 1)
+    const numOfChildren = node?.children.length || 0
+    const numOfDoneChildren =
+      node?.children.filter(child => child.progress == 1).length || 0
     const textVariations = {
-      progress: `${doneChildren.length}/${node.children.length}`,
+      progress: `${numOfDoneChildren}/${numOfChildren}`,
       checkbox: "",
       meter: `${Math.round(percentage * 100)}%`,
     }
@@ -76,7 +78,7 @@ const Progress = observer(
       },
     }
 
-    const text = textVariations[variant]
+    const text = node ? textVariations[variant] : ""
     const buttonProps = onClick ? { role: "button", onClick } : {}
 
     return (
