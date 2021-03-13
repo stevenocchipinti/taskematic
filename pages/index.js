@@ -1,12 +1,16 @@
 import "twin.macro"
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { observer } from "mobx-react-lite"
-import { useUserStore } from "../lib/stores"
+import { useProjectStore, useUserStore } from "../lib/stores"
 
 const LandingPage = observer(() => {
   const [email, setEmail] = useState("")
 
+  const router = useRouter()
+
+  const projectStore = useProjectStore()
   const userStore = useUserStore()
   const { user } = userStore
 
@@ -24,6 +28,13 @@ const LandingPage = observer(() => {
   const linkAnonymousWithEmail = e => {
     e.preventDefault()
     if (email) userStore.linkAnonymousWithEmail(email)
+  }
+
+  const createNewProject = () => {
+    projectStore
+      .createProject()
+      .then(projectId => router.push(`/project/${projectId}`))
+      .catch(e => console.error("nope", e))
   }
 
   return (
@@ -73,9 +84,11 @@ const LandingPage = observer(() => {
             </form>
           )}
 
-          {/* <Link href="/project/new" passHref>
-            <a tw="p-4 border">🆕 Start a project</a>
-          </Link> */}
+          {user && (
+            <button tw="p-4 border" onClick={createNewProject}>
+              🆕 Start a project
+            </button>
+          )}
 
           {user && (
             <button tw="p-4 border" onClick={() => userStore.signOut()}>
