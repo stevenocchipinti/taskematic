@@ -1,5 +1,3 @@
-import tw, { styled } from "twin.macro"
-
 const TaskematicSvg = props => (
   <svg
     width="62"

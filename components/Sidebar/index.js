@@ -2,7 +2,7 @@ import tw, { styled } from "twin.macro"
 import { observer } from "mobx-react-lite"
 import Link from "next/link"
 
-import Logo from "./Logo"
+import Logo from "../Logo"
 import Progress from "../Progress"
 
 const StyledLink = styled.a`
