@@ -147,7 +147,7 @@ const LandingPage = observer(() => {
   const router = useRouter()
   const projectStore = useProjectStore()
   const userStore = useUserStore()
-  const { user } = userStore
+  const { user, ready } = userStore
 
   const signInWithEmail = e => {
     e.preventDefault()
@@ -187,7 +187,11 @@ const LandingPage = observer(() => {
               <p>It's easy &mdash; no login required!</p>
             )}
 
-            <GradientButton onClick={createNewProject} tw="h-24">
+            <GradientButton
+              disabled={!ready}
+              onClick={createNewProject}
+              tw="h-24"
+            >
               Get started
             </GradientButton>
           </div>
@@ -206,7 +210,7 @@ const LandingPage = observer(() => {
                   onChange={e => setEmail(e.target.value)}
                   value={email}
                 ></Input>
-                <GradientButton>Sign in / up</GradientButton>
+                <GradientButton disabled={!ready}>Sign in / up</GradientButton>
               </form>
             </>
           )}
@@ -226,7 +230,7 @@ const LandingPage = observer(() => {
                   onChange={e => setEmail(e.target.value)}
                   value={email}
                 />
-                <GradientButton tw="p-4 border">
+                <GradientButton disabled={!ready} tw="p-4 border">
                   Link an email address
                 </GradientButton>
               </form>
@@ -236,9 +240,14 @@ const LandingPage = observer(() => {
           {user && (
             <>
               <Link href="/project/taskematic" passHref>
-                <OutlineButton as="a">🐶 Dog food</OutlineButton>
+                <OutlineButton disabled={!ready} as="a">
+                  🐶 Dog food
+                </OutlineButton>
               </Link>
-              <OutlineButton onClick={() => userStore.signOut()}>
+              <OutlineButton
+                disabled={!ready}
+                onClick={() => userStore.signOut()}
+              >
                 🚪 Sign out
               </OutlineButton>
             </>
