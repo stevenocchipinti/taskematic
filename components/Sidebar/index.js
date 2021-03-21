@@ -38,6 +38,7 @@ const Sidebar = observer(({ project }) => (
       tw="h-48 w-48 m-12 flex-none"
       node={project?.root}
       variant="meter"
+      loading={!project?.ready}
     />
   </Nav>
 ))

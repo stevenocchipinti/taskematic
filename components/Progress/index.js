@@ -40,18 +40,24 @@ const Container = styled.div`
   ${({ onClick }) => onClick && tw`cursor-pointer`}
 `
 
+const StyledCircularProgressbar = styled(CircularProgressbar)`
+  ${({ loading }) => loading && tw`animate-pulse`}
+`
+
 const Progress = observer(
-  ({ node, variant = "progress", onClick, ...props }) => {
+  ({ node, variant = "progress", loading, onClick, ...props }) => {
     const percentage = node?.progress || 0
     const fg = colorForPercentage(percentage)
     const numOfChildren = node?.children.length || 0
     const numOfDoneChildren =
       node?.children.filter(child => child.progress == 1).length || 0
+
     const textVariations = {
       progress: `${numOfDoneChildren}/${numOfChildren}`,
       checkbox: "",
       meter: `${Math.round(percentage * 100)}%`,
     }
+
     const styleVariations = {
       progress: {
         text: { fontSize: "28px", fill: fg },
@@ -83,13 +89,14 @@ const Progress = observer(
 
     return (
       <Container {...buttonProps}>
-        <CircularProgressbar
+        <StyledCircularProgressbar
           circleRatio={variant === "meter" ? 0.65 : 1}
           value={percentage}
           text={text}
           maxValue={1}
           strokeWidth={9}
           styles={styleVariations[variant]}
+          loading={loading}
           {...props}
         />
         {variant === "checkbox" && percentage === 1 && (
