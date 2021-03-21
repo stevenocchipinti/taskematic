@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite"
 
 import Sidebar from "../../components/Sidebar"
 import Column from "../../components/Column"
+import PlaceholderColumn from "../../components/Column/PlaceholderColumn"
 import Item from "../../components/Item"
 
 import { useUiStore, useProjectStore } from "../../lib/stores"
@@ -67,7 +68,7 @@ const App = observer(() => {
     <DragDropContext onDragEnd={onDragEnd}>
       <Columns>
         <Sidebar project={project} />
-        {project?.ready &&
+        {project?.ready ? (
           ui.cursor?.path.map((node, columnIndex) => (
             <Column key={node.id} node={node}>
               {node.children.map((childNode, childIndex) => {
@@ -84,7 +85,10 @@ const App = observer(() => {
                 )
               })}
             </Column>
-          ))}
+          ))
+        ) : (
+          <PlaceholderColumn />
+        )}
       </Columns>
     </DragDropContext>
   )
