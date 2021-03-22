@@ -117,8 +117,11 @@ const OutlineButton = styled.button`
 
 const Input = styled.input`
   ${tw`rounded-lg text-gray-700 p-3`}
-  ${tw`opacity-50 hover:opacity-75 focus:opacity-100`}
+  ${tw`opacity-50 focus:opacity-100`}
   ${tw`outline-none shadow transition duration-300`}
+  @media (hover: hover) {
+    ${tw`hover:opacity-75`}
+  }
 `
 
 const DividerText = styled.div`

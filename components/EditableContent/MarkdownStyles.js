@@ -18,11 +18,13 @@ export default styled.div`
     a {
       ${tw`text-blue-600`}
     }
-    a:hover {
-      ${tw`underline`}
-    }
     hr {
       ${tw`my-6 h-1 bg-gray-200`}
+    }
+    @media (hover: hover) {
+      a:hover {
+        ${tw`underline`}
+      }
     }
   }
 

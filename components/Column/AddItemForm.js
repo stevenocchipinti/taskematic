@@ -4,7 +4,10 @@ import PlusIcon from "../icons/PlusIcon"
 
 const Button = styled.button`
   ${tw`w-8 h-8 p-1 m-auto mr-1 absolute right-0 top-0 bottom-0`}
-  ${tw`text-gray-400 hover:text-gray-500`}
+  ${tw`text-gray-400`}
+  @media (hover: hover) {
+    ${tw`hover:text-gray-500`}
+  }
 `
 
 const Input = tw.input`h-10 py-2 pl-4 pr-9 text-sm w-full border rounded`
