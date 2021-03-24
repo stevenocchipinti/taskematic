@@ -60,7 +60,24 @@ const SubTitle = styled.p`
   ${tw`text-xl text-center`}
 `
 
-const GradientButton = styled.button`
+const Button = styled.button`
+  ${tw`rounded-lg text-center`}
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: box-shadow 0.2s;
+  }
+
+  :focus {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+    outline: none;
+  }
+
+  :disabled {
+    ${tw`opacity-75 text-gray-300`}
+  }
+`
+
+const GradientButton = styled(Button)`
   background-image: linear-gradient(
     45deg,
     #e96443 0%,
@@ -68,18 +85,12 @@ const GradientButton = styled.button`
     #e96443 100%
   );
   padding: 1rem 3rem;
-  text-align: center;
   text-transform: uppercase;
   background-size: 200% auto;
-  ${tw`shadow rounded-lg`}
+  ${tw`shadow`}
 
   @media (prefers-reduced-motion: no-preference) {
-    transition: box-shadow 0.2s, background-position 0.5s;
-  }
-
-  :focus {
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
-    outline: none;
+    transition: background-position 0.5s;
   }
 
   :hover {
@@ -89,7 +100,6 @@ const GradientButton = styled.button`
   }
 
   :disabled {
-    ${tw`opacity-75 text-gray-300`}
     background-position: left center;
   }
 `
@@ -98,12 +108,7 @@ const OutlineButton = styled.button`
   ${tw`p-4 rounded-lg border text-center`}
 
   @media (prefers-reduced-motion: no-preference) {
-    transition: box-shadow 0.2s, background-color 0.3s;
-  }
-
-  :focus {
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
-    outline: none;
+    transition: background-color 0.3s;
   }
 
   :hover {
@@ -114,6 +119,49 @@ const OutlineButton = styled.button`
     ${tw`opacity-75 text-gray-300 bg-transparent`}
   }
 `
+
+const AirplaneSvg = props => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    {...props}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 12L13 12M5 12L3 21L21 12L3 3L5 12Z"
+    />
+  </svg>
+)
+
+const Airplane = styled(AirplaneSvg)`
+  ${tw`h-6 w-6 absolute left-4 top-0 bottom-0 my-auto transform -rotate-90`}
+  transition: all 0.7s ease-in;
+  transform-origin: 0 50px;
+
+  ${({ $state }) =>
+    $state === "pending" && tw`rotate-0 animate-pulse duration-300`}
+
+  ${({ $state }) =>
+    $state === "sent" && "transform: rotate(0) translateX(400px);"}
+
+  ${({ $state }) => $state === "fail" && tw`rotate-180`}
+
+  ${({ $state }) => $state === "reset" && tw`transition-none`}
+`
+
+const SendButton = ({ state, children }) => (
+  <GradientButton disabled={state !== "reset"} tw="relative overflow-hidden">
+    <Airplane $state={state} />
+    {state === "reset" && children}
+    {state === "pending" && "Sending email..."}
+    {state === "fail" && "Failed"}
+    {state === "sent" && "Sent!"}
+  </GradientButton>
+)
 
 const Input = styled.input`
   ${tw`rounded-lg text-gray-700 p-3`}
@@ -145,28 +193,74 @@ const DividerText = styled.div`
   }
 `
 
+const ErrorMessage = styled.div`
+  ${tw`text-red-400 bg-gray-800 bg-opacity-75 rounded-xl p-4`}
+  max-width: fit-content;
+`
+
 const LandingPage = observer(() => {
   const [email, setEmail] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [buttonState, setButtonState] = useState("reset")
+
   const router = useRouter()
   const projectStore = useProjectStore()
   const userStore = useUserStore()
   const { user, ready } = userStore
 
+  const onChange = e => {
+    setEmail(e.target.value)
+    setErrorMessage("")
+  }
+
   const signInWithEmail = e => {
     e.preventDefault()
-    if (email) userStore.signInWithEmail(email)
+    if (!email) return
+
+    setErrorMessage("")
+    setButtonState("pending")
+    userStore
+      .signInWithEmail(email)
+      .then(() => {
+        setButtonState("sent")
+      })
+      .catch(error => {
+        setButtonState("fail")
+        setErrorMessage(error.message)
+      })
+      // TODO: The timeout could be done in userStore and cancel any current requests?
+      .finally(() => setTimeout(() => setButtonState("reset"), 2000))
   }
 
   const linkAnonymousWithEmail = e => {
     e.preventDefault()
-    if (email) userStore.linkAnonymousWithEmail(email)
+    if (!email) return
+
+    setErrorMessage("")
+    setButtonState("pending")
+    userStore
+      .linkAnonymousWithEmail(email)
+      .then(() => {
+        setButtonState("sent")
+      })
+      .catch(error => {
+        setButtonState("fail")
+        setErrorMessage(error.message)
+      })
+      // TODO: The timeout could be done in userStore and cancel any current requests?
+      .finally(() => setTimeout(() => setButtonState("reset"), 2000))
+  }
+
+  const signOut = () => {
+    userStore.signOut().catch(error => setErrorMessage(error.message))
   }
 
   const createNewProject = () => {
+    setErrorMessage("")
     projectStore
       .createProject()
       .then(projectId => router.push(`/project/${projectId}`))
-      .catch(e => console.error("nope", e))
+      .catch(error => setErrorMessage(error.message))
   }
 
   return (
@@ -210,10 +304,12 @@ const LandingPage = observer(() => {
                 </p>
                 <Input
                   placeholder="Your email here"
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={onChange}
                   value={email}
                 ></Input>
-                <GradientButton disabled={!ready}>Sign in / up</GradientButton>
+                <SendButton state={buttonState} disabled={!ready}>
+                  Sign in / up
+                </SendButton>
               </form>
             </>
           )}
@@ -230,12 +326,12 @@ const LandingPage = observer(() => {
                 <Input
                   tw="flex-grow border p-4 mr-8"
                   placeholder="Your email here"
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={onChange}
                   value={email}
                 />
-                <GradientButton disabled={!ready} tw="p-4 border">
+                <SendButton state={state} disabled={!ready} tw="p-4 border">
                   Link an email address
-                </GradientButton>
+                </SendButton>
               </form>
             </>
           )}
@@ -247,14 +343,13 @@ const LandingPage = observer(() => {
                   🐶 Dog food
                 </OutlineButton>
               </Link>
-              <OutlineButton
-                disabled={!ready}
-                onClick={() => userStore.signOut()}
-              >
+              <OutlineButton disabled={!ready} onClick={signOut}>
                 🚪 Sign out
               </OutlineButton>
             </>
           )}
+
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         </ActionSection>
       </Layout>
     </main>
