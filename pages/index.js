@@ -1,11 +1,16 @@
 import tw, { styled } from "twin.macro"
 import { createGlobalStyle } from "styled-components"
 import { useState } from "react"
-import Link from "next/link"
 import { useRouter } from "next/router"
+import Link from "next/link"
 import { observer } from "mobx-react-lite"
 import { useProjectStore, useUserStore } from "../lib/stores"
 import Logo from "../components/Logo"
+import {
+  GradientButton,
+  SendButton,
+  OutlineButton,
+} from "../components/Buttons"
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -27,7 +32,7 @@ const Layout = styled.div`
 `
 
 const ActionSection = styled.section`
-  ${tw`flex flex-col sm:p-16 p-8 rounded-lg shadow-2xl gap-8`}
+  ${tw`max-w-xl w-full flex flex-col sm:p-16 p-8 rounded-lg shadow-2xl gap-8`}
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(4px);
@@ -35,7 +40,7 @@ const ActionSection = styled.section`
 `
 
 const IntroSection = styled.section`
-  ${tw`grid gap-4 mt-16 sm:mt-8`}
+  ${tw`grid gap-4 mt-8 sm:mt-8`}
   font-family: "Montserrat", sans-serif;
   grid-template-areas:
     "logo title"
@@ -59,109 +64,6 @@ const SubTitle = styled.p`
   grid-area: subtitle;
   ${tw`text-xl text-center`}
 `
-
-const Button = styled.button`
-  ${tw`rounded-lg text-center`}
-
-  @media (prefers-reduced-motion: no-preference) {
-    transition: box-shadow 0.2s;
-  }
-
-  :focus {
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
-    outline: none;
-  }
-
-  :disabled {
-    ${tw`opacity-75 text-gray-300`}
-  }
-`
-
-const GradientButton = styled(Button)`
-  background-image: linear-gradient(
-    45deg,
-    #e96443 0%,
-    #904e95 51%,
-    #e96443 100%
-  );
-  padding: 1rem 3rem;
-  text-transform: uppercase;
-  background-size: 200% auto;
-  ${tw`shadow`}
-
-  @media (prefers-reduced-motion: no-preference) {
-    transition: background-position 0.5s;
-  }
-
-  :hover {
-    background-position: right center;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  :disabled {
-    background-position: left center;
-  }
-`
-
-const OutlineButton = styled.button`
-  ${tw`p-4 rounded-lg border text-center`}
-
-  @media (prefers-reduced-motion: no-preference) {
-    transition: background-color 0.3s;
-  }
-
-  :hover {
-    background-color: #fff2;
-  }
-
-  :disabled {
-    ${tw`opacity-75 text-gray-300 bg-transparent`}
-  }
-`
-
-const AirplaneSvg = props => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    {...props}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M5 12L13 12M5 12L3 21L21 12L3 3L5 12Z"
-    />
-  </svg>
-)
-
-const Airplane = styled(AirplaneSvg)`
-  ${tw`h-6 w-6 absolute left-4 top-0 bottom-0 my-auto transform -rotate-90`}
-  transition: all 0.7s ease-in;
-  transform-origin: 0 50px;
-
-  ${({ $state }) =>
-    $state === "pending" && tw`rotate-0 animate-pulse duration-300`}
-
-  ${({ $state }) =>
-    $state === "sent" && "transform: rotate(0) translateX(400px);"}
-
-  ${({ $state }) => $state === "fail" && tw`rotate-180`}
-
-  ${({ $state }) => $state === "reset" && tw`transition-none`}
-`
-
-const SendButton = ({ state, children }) => (
-  <GradientButton disabled={state !== "reset"} tw="relative overflow-hidden">
-    <Airplane $state={state} />
-    {state === "reset" && children}
-    {state === "pending" && "Sending email..."}
-    {state === "fail" && "Failed"}
-    {state === "sent" && "Sent!"}
-  </GradientButton>
-)
 
 const Input = styled.input`
   ${tw`rounded-lg text-gray-700 p-3`}
@@ -274,22 +176,18 @@ const LandingPage = observer(() => {
           <SubTitle>A hierarchical to-do list</SubTitle>
         </IntroSection>
 
-        <ActionSection tw="max-w-3xl">
-          <h2 tw="text-4xl">Welcome</h2>
+        <ActionSection>
+          <h2 tw="text-4xl">{user ? "Welcome back" : "Welcome"}</h2>
 
           <div tw="flex flex-col gap-6">
-            {user ? (
-              <p>Good to see you again, create a new project here.</p>
-            ) : (
-              <p>It's easy &mdash; no login required!</p>
-            )}
+            {!user && <p>It's easy &mdash; no login required!</p>}
 
             <GradientButton
               disabled={!ready}
               onClick={createNewProject}
               tw="h-24"
             >
-              Get started
+              Create project
             </GradientButton>
           </div>
 
@@ -338,9 +236,9 @@ const LandingPage = observer(() => {
 
           {user && (
             <>
-              <Link href="/project/taskematic" passHref>
+              <Link href="/projects" passHref>
                 <OutlineButton disabled={!ready} as="a">
-                  🐶 Dog food
+                  My projects
                 </OutlineButton>
               </Link>
               <OutlineButton disabled={!ready} onClick={signOut}>
