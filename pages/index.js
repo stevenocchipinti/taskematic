@@ -6,11 +6,7 @@ import Link from "next/link"
 import { observer } from "mobx-react-lite"
 import { useProjectStore, useUserStore } from "../lib/stores"
 import Logo from "../components/Logo"
-import {
-  GradientButton,
-  SendButton,
-  OutlineButton,
-} from "../components/Buttons"
+import { LoaderButton, SendButton, OutlineButton } from "../components/Buttons"
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -94,6 +90,7 @@ const ErrorMessage = styled.div`
 const LandingPage = observer(() => {
   const [email, setEmail] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+  const [loading, setLoading] = useState(false)
   const [buttonState, setButtonState] = useState("reset")
 
   const router = useRouter()
@@ -150,10 +147,18 @@ const LandingPage = observer(() => {
 
   const createNewProject = () => {
     setErrorMessage("")
+    setLoading(true)
+    const timeout = setTimeout(() => setLoading(false), 10000)
     projectStore
       .createProject()
-      .then(projectId => router.push(`/projects/${projectId}`))
-      .catch(error => setErrorMessage(error.message))
+      .then(projectId => {
+        clearTimeout(timeout)
+        router.push(`/projects/${projectId}`)
+      })
+      .catch(error => {
+        setLoading(false)
+        setErrorMessage(error.message)
+      })
   }
 
   return (
@@ -173,13 +178,15 @@ const LandingPage = observer(() => {
           <div tw="flex flex-col gap-6">
             {!user && <p>It's easy &mdash; no login required!</p>}
 
-            <GradientButton
+            <LoaderButton
+              loading={loading}
+              loaderHeight={64}
               disabled={!ready}
               onClick={createNewProject}
               tw="h-24"
             >
               Create project
-            </GradientButton>
+            </LoaderButton>
           </div>
 
           {!user && (

@@ -1,4 +1,5 @@
 import tw, { styled } from "twin.macro"
+import Loader from "../icons/Loader"
 
 const Button = styled.button`
   ${tw`rounded-lg text-white text-center`}
@@ -93,8 +94,12 @@ const Airplane = styled(AirplaneSvg)`
   ${({ $state }) => $state === "reset" && tw`transition-none`}
 `
 
-const SendButton = ({ state, children }) => (
-  <GradientButton disabled={state !== "reset"} tw="relative overflow-hidden">
+const SendButton = ({ state, children, ...props }) => (
+  <GradientButton
+    disabled={state !== "reset"}
+    tw="relative overflow-hidden"
+    {...props}
+  >
     <Airplane $state={state} />
     {state === "reset" && children}
     {state === "pending" && "Sending email..."}
@@ -103,4 +108,10 @@ const SendButton = ({ state, children }) => (
   </GradientButton>
 )
 
-export { GradientButton, SendButton, OutlineButton }
+const LoaderButton = ({ loading, loaderHeight = 48, children, ...props }) => (
+  <GradientButton disabled={loading} {...props}>
+    {loading ? <Loader tw="mx-auto" height={loaderHeight} /> : children}
+  </GradientButton>
+)
+
+export { GradientButton, OutlineButton, SendButton, LoaderButton }

@@ -1,5 +1,5 @@
 import tw, { styled } from "twin.macro"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -7,7 +7,7 @@ import Skeleton from "react-loading-skeleton"
 import Logo from "../../components/Logo"
 import PlusIcon from "../../components/icons/PlusIcon"
 import { useProjectStore } from "../../lib/stores"
-import { GradientButton } from "../../components/Buttons"
+import { LoaderButton } from "../../components/Buttons"
 
 const Nav = styled.nav`
   ${tw`flex justify-center h-16 shadow-lg`}
@@ -40,13 +40,23 @@ const ProjectsPage = observer(() => {
   const router = useRouter()
   const projectStore = useProjectStore()
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => projectStore.subscribeToProjects(), [projectStore])
 
   const createNewProject = () => {
+    setLoading(true)
+    const timeout = setTimeout(() => setLoading(false), 10000)
     projectStore
       .createProject()
-      .then(projectId => router.push(`/projects/${projectId}`))
-      .catch(error => console.error(error.message))
+      .then(projectId => {
+        clearTimeout(timeout)
+        router.push(`/projects/${projectId}`)
+      })
+      .catch(error => {
+        console.error(error)
+        setLoading(false)
+      })
   }
 
   return (
@@ -60,9 +70,13 @@ const ProjectsPage = observer(() => {
           </HomeLink>
         </Link>
         <div tw="flex flex-1 flex-row-reverse">
-          <GradientButton tw="my-2 ml-0 mr-3 p-0 px-4">
+          <LoaderButton
+            onClick={createNewProject}
+            loading={loading}
+            tw="my-2 ml-0 mr-3 p-0 px-4"
+          >
             Create project
-          </GradientButton>
+          </LoaderButton>
         </div>
       </Nav>
 
