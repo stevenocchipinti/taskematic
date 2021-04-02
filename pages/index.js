@@ -14,21 +14,13 @@ import {
 
 const GlobalStyle = createGlobalStyle`
   html {
-    background-image: linear-gradient(
-      to right top,
-      #051937,
-      #004d7a,
-      #008793,
-      #00bf72,
-      #a8eb12
-    );
+    background-image: var(--brand-gradient);
   }
 `
 
 const Layout = styled.div`
   ${tw`flex flex-col gap-20 justify-around items-center`}
   ${tw`mx-auto mb-8 xl:mt-16 xl:flex-row max-w-screen-xl`}
-  font-family: "Montserrat", sans-serif;
 `
 
 const ActionSection = styled.section`
@@ -41,7 +33,6 @@ const ActionSection = styled.section`
 
 const IntroSection = styled.section`
   ${tw`grid gap-4 mt-8 sm:mt-8`}
-  font-family: "Montserrat", sans-serif;
   grid-template-areas:
     "logo title"
     "subtitle subtitle";
@@ -161,7 +152,7 @@ const LandingPage = observer(() => {
     setErrorMessage("")
     projectStore
       .createProject()
-      .then(projectId => router.push(`/project/${projectId}`))
+      .then(projectId => router.push(`/projects/${projectId}`))
       .catch(error => setErrorMessage(error.message))
   }
 

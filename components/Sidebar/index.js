@@ -6,7 +6,6 @@ import Logo from "../Logo"
 import Progress from "../Progress"
 
 const StyledLink = styled.a`
-  font-family: "Montserrat", sans-serif;
   ${tw`flex items-start w-full pt-3 px-4`}
   ${tw`opacity-70 hover:opacity-100`}
   ${tw`transition duration-300`}

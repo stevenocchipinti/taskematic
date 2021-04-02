@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro"
 
 const Button = styled.button`
-  ${tw`rounded-lg text-center`}
+  ${tw`rounded-lg text-white text-center`}
 
   @media (prefers-reduced-motion: no-preference) {
     transition: box-shadow 0.2s;

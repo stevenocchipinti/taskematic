@@ -13,7 +13,7 @@ import Item from "../../components/Item"
 import { useUiStore, useProjectStore } from "../../lib/stores"
 
 const Columns = styled.div`
-  ${tw`flex flex-grow bg-gray-100 overflow-auto`}
+  ${tw`flex flex-grow overflow-auto`}
   scroll-snap-type: x mandatory;
 
   // This is a dodgy hack until I can work out how to get the margin at the end

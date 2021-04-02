@@ -2,45 +2,91 @@ import tw, { styled } from "twin.macro"
 import { useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import Skeleton from "react-loading-skeleton"
+import Logo from "../../components/Logo"
+import PlusIcon from "../../components/icons/PlusIcon"
 import { useProjectStore } from "../../lib/stores"
-import { OutlineButton } from "../../components/Buttons"
+import { GradientButton } from "../../components/Buttons"
 
-const Layout = tw.main`max-w-screen-xl w-full px-16 py-8 mx-auto flex flex-col gap-8`
-const Home = tw.a`text-4xl font-bold text-center`
-const Heading = tw.h2`text-3xl font-bold`
+const Nav = styled.nav`
+  ${tw`flex justify-center h-16 shadow-lg`}
+  background-image: var(--brand-gradient);
+`
+const HomeLink = styled.a`
+  ${tw`h-full inline-flex items-center pr-4`}
+  ${tw`text-white text-2xl transform transition hover:scale-105`}
+`
 
-const Container = tw.div`flex gap-4`
+const Main = tw.main`max-w-screen-xl w-full p-8 mx-auto flex flex-col gap-8`
 
-const Tile = styled(OutlineButton)`
-  ${tw`h-32 w-64 flex justify-center items-center transition transform hover:scale-105`}
+const Container = styled.div`
+  ${tw`grid auto-cols-min gap-4`}
+  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+`
+
+const Tile = styled.button`
+  ${tw`h-32 w-full p-4 bg-white border rounded-2xl shadow-sm`}
+  ${tw`flex text-lg text-gray-500 hover:text-gray-600`}
+  ${tw`capitalize transition transform hover:scale-105`}
+`
+const PlaceholderTile = tw.span`h-32 w-full p-4 flex bg-white border rounded-2xl`
+
+const NewProjectTile = tw(Tile)`
+  flex-col justify-evenly items-center shadow-inner bg-gray-200
 `
 
 const ProjectsPage = observer(() => {
+  const router = useRouter()
   const projectStore = useProjectStore()
 
   useEffect(() => projectStore.subscribeToProjects(), [projectStore])
 
-  return (
-    <Layout>
-      <Link href={"/"} passHref>
-        <Home>Taskematic</Home>
-      </Link>
-      <Heading>My projects:</Heading>
+  const createNewProject = () => {
+    projectStore
+      .createProject()
+      .then(projectId => router.push(`/projects/${projectId}`))
+      .catch(error => console.error(error.message))
+  }
 
-      {!projectStore.ready ? (
-        <span>loading...</span>
-      ) : (
+  return (
+    <>
+      <Nav>
+        <div tw="flex-1 hidden sm:block" />
+        <Link href="/" passHref>
+          <HomeLink>
+            <Logo tw="h-10" />
+            Taskematic
+          </HomeLink>
+        </Link>
+        <div tw="flex flex-1 flex-row-reverse">
+          <GradientButton tw="my-2 ml-0 mr-3 p-0 px-4">
+            Create project
+          </GradientButton>
+        </div>
+      </Nav>
+
+      <Main>
+        <h2 tw="text-2xl text-gray-500">Projects</h2>
         <Container>
-          {projectStore.projects?.length > 0
-            ? projectStore.projects.map(slug => (
-                <Link key={slug} href={`/projects/${slug}`} passHref>
-                  <Tile as="a">{slug}</Tile>
-                </Link>
-              ))
-            : "No projects"}
+          <NewProjectTile onClick={createNewProject}>
+            <PlusIcon tw="h-8" />
+            Create new project
+          </NewProjectTile>
+          {!projectStore.ready ? (
+            <PlaceholderTile>
+              <Skeleton width={200} height={20} />
+            </PlaceholderTile>
+          ) : (
+            projectStore.projects?.map(slug => (
+              <Link key={slug} href={`/projects/${slug}`} passHref>
+                <Tile as="a">{slug}</Tile>
+              </Link>
+            ))
+          )}
         </Container>
-      )}
-    </Layout>
+      </Main>
+    </>
   )
 })
 
