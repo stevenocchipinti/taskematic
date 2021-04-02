@@ -218,7 +218,11 @@ const LandingPage = observer(() => {
                   onChange={onChange}
                   value={email}
                 />
-                <SendButton state={state} disabled={!ready} tw="p-4 border">
+                <SendButton
+                  state={buttonState}
+                  disabled={!ready}
+                  tw="p-4 border"
+                >
                   Link an email address
                 </SendButton>
               </form>
