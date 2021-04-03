@@ -1,3 +1,4 @@
+import "twin.macro"
 import { useEffect, useRef } from "react"
 import { Observer } from "mobx-react-lite"
 import { Droppable } from "react-beautiful-dnd"
@@ -13,6 +14,7 @@ import {
   ColumnBody,
   ColumnFooter,
   List,
+  BackButton,
 } from "./styles"
 
 const DroppableObserver = ({ children, ...props }) => (
@@ -23,7 +25,7 @@ const DroppableObserver = ({ children, ...props }) => (
   </Droppable>
 )
 
-const DroppableColumn = ({ node, children }) => {
+const DroppableColumn = ({ node, children, onClose }) => {
   const ref = useRef(null)
 
   useEffect(() => ref?.current?.scrollIntoView({ behavior: "smooth" }), [])
@@ -64,6 +66,9 @@ const DroppableColumn = ({ node, children }) => {
               />
             </ColumnFooter>
           </Column>
+          {typeof onClose === "function" && (
+            <BackButton tw="sm:hidden" onClick={onClose} />
+          )}
         </Container>
       )}
     </DroppableObserver>

@@ -70,7 +70,13 @@ const App = observer(() => {
         <Sidebar project={project} />
         {project?.ready ? (
           ui.cursor?.path.map((node, columnIndex) => (
-            <Column key={node.id} node={node}>
+            <Column
+              key={node.id}
+              node={node}
+              onClose={
+                columnIndex > 0 ? () => ui.setCursor(node.parent) : false
+              }
+            >
               {node.children.map((childNode, childIndex) => {
                 const isSelected = ui.cursor.path.includes(childNode)
                 return (
