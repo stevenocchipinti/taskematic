@@ -1,6 +1,7 @@
 import tw, { styled } from "twin.macro"
 import { Draggable } from "react-beautiful-dnd"
 import { Observer } from "mobx-react-lite"
+import useSound from "../../lib/useSound"
 import Progress from "../Progress"
 
 const DraggableObserver = ({ children, ...props }) => (
@@ -30,6 +31,8 @@ const Item = styled.li`
 const Text = tw.span`px-4 py-2`
 
 const DraggableCard = ({ node, index, ...props }) => {
+  const playSound = useSound("/ding.mp3")
+
   return (
     <DraggableObserver key={node.id} draggableId={node.id} index={index}>
       {(provided, snapshot) => (
@@ -52,6 +55,7 @@ const DraggableCard = ({ node, index, ...props }) => {
               if (node.isLeaf) {
                 e.stopPropagation()
                 node.setDone(!node.done)
+                node.done && playSound()
               }
             }}
           />
