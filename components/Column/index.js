@@ -34,16 +34,18 @@ const DroppableColumn = ({ node, children, onClose }) => {
     <DroppableObserver droppableId={node.id}>
       {(provided, snapshot) => (
         <Container ref={ref}>
-          <Column>
-            <ColumnHeader>
-              <EditableTitle
-                value={node.title}
-                onChange={newTitle => node.setTitle(newTitle)}
-              />
-              <Menu node={node} />
-            </ColumnHeader>
+          <Column panelMode={node.isRoot}>
+            {!node.isRoot && (
+              <ColumnHeader>
+                <EditableTitle
+                  value={node.title}
+                  onChange={newTitle => node.setTitle(newTitle)}
+                />
+                <Menu node={node} />
+              </ColumnHeader>
+            )}
 
-            <ColumnBody>
+            <ColumnBody panelMode={node.isRoot}>
               {node.content && (
                 <EditableContent
                   value={node.content}
@@ -66,7 +68,8 @@ const DroppableColumn = ({ node, children, onClose }) => {
               />
             </ColumnFooter>
           </Column>
-          {typeof onClose === "function" && (
+
+          {!node.isRoot && typeof onClose === "function" && (
             <BackButton tw="sm:hidden" onClick={onClose} />
           )}
         </Container>

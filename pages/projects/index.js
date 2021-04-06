@@ -7,7 +7,7 @@ import Skeleton from "react-loading-skeleton"
 import Logo from "../../components/Logo"
 import PlusIcon from "../../components/icons/PlusIcon"
 import { useProjectStore } from "../../lib/stores"
-import { LoaderButton } from "../../components/Buttons"
+import UserIcon from "../../components/icons/UserIcon"
 
 const Nav = styled.nav`
   ${tw`flex justify-center h-16 shadow-lg`}
@@ -70,22 +70,22 @@ const ProjectsPage = observer(() => {
           </HomeLink>
         </Link>
         <div tw="flex flex-1 flex-row-reverse">
-          <LoaderButton
-            onClick={createNewProject}
-            loading={loading}
-            tw="my-2 ml-0 mr-3 p-0 px-4"
-          >
-            Create project
-          </LoaderButton>
+          <UserIcon tw="text-white w-8 h-8 m-4" />
         </div>
       </Nav>
 
       <Main>
         <h2 tw="text-2xl text-gray-500">Projects</h2>
         <Container>
-          <NewProjectTile onClick={createNewProject}>
-            <PlusIcon tw="h-8" />
-            Create new project
+          <NewProjectTile disabled={loading} onClick={createNewProject}>
+            {loading ? (
+              "Loading..."
+            ) : (
+              <>
+                <PlusIcon tw="h-8" />
+                Create new project
+              </>
+            )}
           </NewProjectTile>
           {!projectStore.ready ? (
             <PlaceholderTile>

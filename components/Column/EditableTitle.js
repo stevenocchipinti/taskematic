@@ -31,8 +31,9 @@ const EditableTitle = ({ onChange, value, ...props }) => {
   }
 
   return editable ? (
-    <form onSubmit={onSubmit} {...props}>
+    <form onSubmit={onSubmit} {...props} tw="flex-grow">
       <TitleInput
+        tw="pr-2"
         ref={inputRef}
         value={newTitle}
         onChange={e => setNewTitle(e.target.value)}

@@ -17,6 +17,7 @@ export const Column = styled.div`
   ${tw`bg-white rounded shadow`}
   animation: ${slideIn} 0.2s ease-in-out;
   width: min(22rem, 100vw);
+  ${({ panelMode }) => panelMode && tw`m-0 h-full rounded-none`}
 `
 
 export const List = styled.ul`
@@ -36,7 +37,10 @@ export const List = styled.ul`
 
 export const ColumnHeader = tw.div`flex justify-between align-top`
 
-export const ColumnBody = tw.div`pb-2 px-4`
+export const ColumnBody = styled.div`
+  ${tw`pb-2 px-4`}
+  ${({ panelMode }) => panelMode && tw`pt-4`}
+`
 
 export const ColumnFooter = tw.div`flex p-4 pt-0 gap-2`
 
