@@ -1,34 +1,38 @@
-import tw, { styled, GlobalStyles } from "twin.macro"
-import { createGlobalStyle } from "styled-components"
+import tw, { styled } from "twin.macro"
+import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import "typeface-montserrat"
 import { RootStoreProvider } from "../lib/stores"
 
-const Container = styled.div`
-  ${tw`flex flex-col min-h-screen text-gray-700`}
-`
-
-const Theme = createGlobalStyle`
-  html {
-    font-family: "Montserrat", sans-serif;
-    ${tw`bg-gray-100`}
-    --brand-gradient: linear-gradient(
-        to right top,
-        #051937,
-        #004d7a,
-        #008793,
-        #00bf72,
-        #a8eb12
-      );
-  }
-`
+const theme = extendTheme({
+  colors: {
+    brandGradient: `linear-gradient(
+          to right top,
+          #051937,
+          #004d7a,
+          #008793,
+          #00bf72,
+          #a8eb12
+        )`,
+  },
+  fonts: {
+    heading: "Montserrat, sans-serif",
+    body: "Montserrat, sans-serif",
+  },
+  styles: {
+    global: ({ colorMode }) => ({
+      "html, body": {
+        height: "100%",
+        backgroundColor: colorMode === "dark" ? "gray.500" : "gray.50",
+      },
+    }),
+  },
+})
 
 const App = ({ Component, pageProps }) => (
   <RootStoreProvider>
-    <Container>
-      <GlobalStyles />
-      <Theme />
+    <ChakraProvider theme={theme}>
       <Component {...pageProps} />
-    </Container>
+    </ChakraProvider>
   </RootStoreProvider>
 )
 

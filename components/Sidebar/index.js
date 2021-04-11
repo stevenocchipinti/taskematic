@@ -1,6 +1,19 @@
 import tw, { styled } from "twin.macro"
 import { observer } from "mobx-react-lite"
 import Link from "next/link"
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
+  IconButton,
+} from "@chakra-ui/react"
 
 import UserIcon from "../icons/UserIcon"
 import Logo from "../Logo"
@@ -42,9 +55,26 @@ const Sidebar = observer(({ project }) => (
       <LogoLink href="/projects">
         <Taskematic>Taskematic</Taskematic>
       </LogoLink>
-      <LogoLink href="/">
-        <UserIcon tw="w-8 h-8 my-2 ml-4" />
-      </LogoLink>
+      {/* <LogoLink href="/">
+        
+      </LogoLink> */}
+      <Menu color="red">
+        <MenuButton
+          as={IconButton}
+          aria-label="User preferences"
+          icon={<UserIcon />}
+          variant="ghost"
+          color="grey.600"
+          _hover={{ bgColor: "gray.700" }}
+          _active={{ bgColor: "gray.500" }}
+        />
+        <MenuList color="gray.900">
+          <MenuItem>New Tab</MenuItem>
+          <MenuItem>New Window</MenuItem>
+          <MenuItem>Open Closed Tab</MenuItem>
+          <MenuItem onClick={console.log}>Open File...</MenuItem>
+        </MenuList>
+      </Menu>
     </NavHeader>
 
     <Title tw="opacity-70">{project?.title}</Title>

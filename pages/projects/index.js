@@ -8,11 +8,25 @@ import Logo from "../../components/Logo"
 import PlusIcon from "../../components/icons/PlusIcon"
 import { useProjectStore } from "../../lib/stores"
 import UserIcon from "../../components/icons/UserIcon"
+import { Flex } from "@chakra-ui/react"
+import { chakra } from "@chakra-ui/system"
 
-const Nav = styled.nav`
-  ${tw`flex justify-center h-16 shadow-lg`}
-  background-image: var(--brand-gradient);
-`
+// const Nav = styled(Flex)`
+//   ${tw`flex justify-center h-16 shadow-lg`}
+//   background-image: var(--brand-gradient);
+// `
+
+const Nav = props => (
+  <Flex
+    as="nav"
+    justify="center"
+    h="16"
+    bg="brandGradient"
+    boxShadow="base"
+    {...props}
+  />
+)
+
 const HomeLink = styled.a`
   ${tw`h-full inline-flex items-center pr-4`}
   ${tw`text-white text-2xl transform transition hover:scale-105`}

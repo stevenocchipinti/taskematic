@@ -1,23 +1,14 @@
 import tw, { styled } from "twin.macro"
-import { createGlobalStyle } from "styled-components"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { observer } from "mobx-react-lite"
+import { Box, Flex } from "@chakra-ui/react"
+
 import { useProjectStore, useUserStore } from "../lib/stores"
-import Logo from "../components/Logo"
 import { LoaderButton, SendButton, OutlineButton } from "../components/Buttons"
-
-const GlobalStyle = createGlobalStyle`
-  html {
-    background-image: var(--brand-gradient);
-  }
-`
-
-const Layout = styled.div`
-  ${tw`flex flex-col gap-20 justify-around items-center`}
-  ${tw`mx-auto mb-8 xl:mt-16 xl:flex-row max-w-screen-xl`}
-`
+import GradientBackground from "../components/GradientBackground"
+import Logo from "../components/Logo"
 
 const ActionSection = styled.section`
   ${tw`max-w-xl w-full flex flex-col sm:p-16 p-8 rounded-lg shadow-2xl gap-8`}
@@ -162,10 +153,20 @@ const LandingPage = observer(() => {
   }
 
   return (
-    <main tw="p-4 text-white">
-      <GlobalStyle />
-
-      <Layout>
+    <Box as="main" p="4">
+      <GradientBackground />
+      <Flex
+        direction={{ base: "column", xl: "row" }}
+        justify="space-around"
+        align="center"
+        bg="transparent"
+        color="white"
+        mx="auto"
+        mb="8"
+        mt={{ xl: "16" }}
+        maxW="container.xl"
+        sx={{ gap: "5rem" }}
+      >
         <IntroSection>
           <Logo height={100} width={100} tw="flex-shrink-0 m-auto" />
           <Title>Taskematic</Title>
@@ -251,8 +252,8 @@ const LandingPage = observer(() => {
 
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         </ActionSection>
-      </Layout>
-    </main>
+      </Flex>
+    </Box>
   )
 })
 
