@@ -9,6 +9,7 @@ const slideIn = keyframes`
 
 export const Container = styled.div`
   scroll-snap-align: center;
+  scroll-snap-stop: always;
   ${tw`flex flex-col items-end last:pr-3`}
 `
 
